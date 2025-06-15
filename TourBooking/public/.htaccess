@@ -1,0 +1,12 @@
+# File: .htaccess
+# Đặt file này trong thư mục /public
+# File này sẽ chuyển hướng tất cả các request đến index.php
+
+RewriteEngine On
+
+# Bỏ qua các file và thư mục đã tồn tại
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+
+# Chuyển hướng tất cả các request khác đến index.php
+RewriteRule ^(.*)$ index.php [L,QSA]

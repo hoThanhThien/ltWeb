@@ -1,0 +1,79 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-image : url('../img/bg/bgreister2.jpg');
+    border-image-width: 1417px;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+.form-register {
+    background-color: white;
+    padding: 30px;
+    border-radius: 12px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    width: 400px;
+}
+
+.form-title {
+    text-align: center;
+    color: #333;
+}
+
+label {
+    display: block;
+    margin-top: 15px;
+    font-weight: bold;
+}
+
+.input-field {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    border: 1px solid #ccc;
+    border-radius: 6px;
+    box-sizing: border-box;
+}
+
+.btn-submit {
+    width: 100%;
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #2575fc;
+    border: none;
+    color: white;
+    font-size: 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.btn-submit:hover {
+    background-color: #6a11cb;
+}
+
+.form-footer {
+    text-align: center;
+    margin-top: 15px;
+}
+
+.link-login {
+    color: #2575fc;
+    text-decoration: none;
+}
+
+.link-login:hover {
+    text-decoration: underline;
+}
+
+.message-error {
+    color: red;
+    font-size: 14px;
+    margin-top: 5px;
+}
