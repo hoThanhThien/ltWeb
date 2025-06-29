@@ -1,18 +1,62 @@
- <?php
-    include_once 'header.php';
-    include_once 'footer.php';
- ?>
- <!-- Home section -->
-    <div id="home">
-        <div class="banner">
-            <img src="../public/img/bennerHeader.jpg" alt="Banner">
-        </div>
+<?php
+include_once 'header.php';
+require_once '../models/Tour.php';
 
+$tourModel = new Tour();
+
+$filter = $_GET['filter'] ?? null;
+$page = max(1, intval($_GET['page'] ?? 1));
+$limit = 10;
+$offset = ($page - 1) * $limit;
+
+// Hàm gọn để xử lý ảnh
+function getImageSrc($image) {
+    return preg_match('/^https?:\/\//i', $image) ? htmlspecialchars($image) : '../public/img/' . htmlspecialchars($image);
+}
+
+// Lấy tour + tính tổng để phân trang
+switch ($filter) {
+    case 'domestic':
+        $randomTours = [];
+        $domesticTours = $tourModel->getTours('trongnuoc', $limit, $offset);
+        $internationalTours = [];
+        $totalTours = $tourModel->countTours('trongnuoc');
+        break;
+    case 'international':
+        $randomTours = [];
+        $domesticTours = [];
+        $internationalTours = $tourModel->getTours('nuocngoai', $limit, $offset);
+        $totalTours = $tourModel->countTours('nuocngoai');
+        break;
+    case 'random-tours':
+    default:
+        $randomTours = $tourModel->getTours(null, $limit, $offset);
+        $domesticTours = [];
+        $internationalTours = [];
+        $totalTours = $tourModel->countTours(null);
+        break;
+}
+$totalPages = max(1, ceil($totalTours / $limit));
+?>
+
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link rel="stylesheet" href="../css/home.css"/>
+    <link rel="stylesheet" href="../css/chitiethome.css"/>
+    <title>ĐẶT TOUR TRỌN GÓI</title>
+    <script src="../js/main.js"></script>
+</head>
+
+<body>
+    <div id="home">
         <div class="homeSearch">
             <div class="homeSearch-title">
-                <div><a href="">Tour trọn gói</a></div>
-                <div><a href="">Tour trong nước</a></div>
-                <div><a href="">Tour nước ngoài</a></div>
+                <div><a href="?filter=random-tours">Tất cả</a></div>
+                <div><a href="?filter=domestic">Tour trong nước</a></div>
+                <div><a href="?filter=international">Tour nước ngoài</a></div>
             </div>
             <div class="search-section">
                 <div class="search-item">
@@ -37,114 +81,82 @@
             </div>
         </div>
 
-        <div class="home-banner">
-            <div class="tour-categories">
-                <div class="tour-category"><img src="../public/img/uudaihe.webp" alt=""><br><p>ƯU ĐÃI ONLINE HÈ</p></div>
-                <div class="tour-category"><img src="../public/img/le.webp" alt=""><br><p>ƯU ĐÃI LỄ</p></div>
-                <div class="tour-category"><img src="../public/img/caocap.webp" alt=""><br><p>TOUR CAO CẤP</p></div>
-                <div class="tour-category"><img src="../public/img/tieuchuan.webp" alt=""><br><p>TOUR TIÊU CHUẨN</p></div>
+        <div class="slideshow-container">
+            <img class="slider active" src="../img/banner1.jpg" alt="Slide 1">
+            <img class="slider" src="../img/banner2.webp" alt="Slide 2">
+            <img class="slider" src="../img/banner3.jpg" alt="Slide 3">
+            <img class="slider" src="../img/banner4.jpg" alt="Slide 4">
+            <img class="slider" src="../img/banner5.jpg" alt="Slide 5">
+        </div>
+    </div>
+<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
+    <div class="main-content">
+        <?php if (!empty($randomTours) && ($filter === 'random-tours' || !$filter)): ?>
+        <section class="random-tours">
+            <h3>TOUR NGẪU NHIÊN</h3>
+            <div id="tour-list">
+                <?php foreach ($randomTours as $tour): ?>
+                    <div class="tour-item">
+                        <img src="<?php echo getImageSrc($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
+                        <h3><?php echo htmlspecialchars($tour['title']); ?> - <?php echo htmlspecialchars($tour['location']); ?></h3>
+                        <p>Giá: <?php echo number_format($tour['discount_price'] ?: $tour['price'], 0, ',', '.'); ?> VNĐ</p>
+                        <p>Ngày khởi hành: <?php echo htmlspecialchars($tour['start_date']); ?> - <?php echo htmlspecialchars($tour['end_date']); ?></p>
+                        <p class="stars"><?php for ($i=0; $i<$tour['stars']; $i++) echo '⭐'; ?></p>
+                        <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
+                    </div>
+                <?php endforeach; ?>
             </div>
+        </section>
+        <?php endif; ?>
+
+        <?php if (!empty($domesticTours) && $filter === 'domestic'): ?>
+        <section class="domestic-tours">
+            <h3>CÁC TOUR TRONG NƯỚC</h3>
+            <div id="tour-list">
+                <?php foreach ($domesticTours as $tour): ?>
+                    <div class="tour-item">
+                        <img src="<?php echo getImageSrc($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
+                        <h3><?php echo htmlspecialchars($tour['title']); ?> - <?php echo htmlspecialchars($tour['location']); ?></h3>
+                        <p>Giá: <?php echo number_format($tour['discount_price'] ?: $tour['price'], 0, ',', '.'); ?> VNĐ</p>
+                        <p>Ngày khởi hành: <?php echo htmlspecialchars($tour['start_date']); ?> - <?php echo htmlspecialchars($tour['end_date']); ?></p>
+                        <p class="stars"><?php for ($i=0; $i<$tour['stars']; $i++) echo '⭐'; ?></p>
+                        <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <?php if (!empty($internationalTours) && $filter === 'international'): ?>
+        <section class="international-tours">
+            <h3>CÁC TOUR NƯỚC NGOÀI</h3>
+            <div id="tour-list">
+                <?php foreach ($internationalTours as $tour): ?>
+                    <div class="tour-item">
+                        <img src="<?php echo getImageSrc($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
+                        <h3><?php echo htmlspecialchars($tour['title']); ?> - <?php echo htmlspecialchars($tour['location']); ?></h3>
+                        <p>Giá: <?php echo number_format($tour['discount_price'] ?: $tour['price'], 0, ',', '.'); ?> VNĐ</p>
+                        <p>Ngày khởi hành: <?php echo htmlspecialchars($tour['start_date']); ?> - <?php echo htmlspecialchars($tour['end_date']); ?></p>
+                        <p class="stars"><?php for ($i=0; $i<$tour['stars']; $i++) echo '⭐'; ?></p>
+                        <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
+                    </div>
+                <?php endforeach; ?>
+            </div>
+        </section>
+        <?php endif; ?>
+
+        <?php if ($totalPages > 1): ?>
+        <div class="pagination">
+            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
+                <a href="?filter=<?php echo htmlspecialchars($filter); ?>&page=<?php echo $i; ?>"
+                   class="<?php echo $i == $page ? 'active' : ''; ?>">
+                    <?php echo $i; ?>
+                </a>
+            <?php endfor; ?>
         </div>
-
-       <div class="slideshow-container">
-            <img class="slider active" src="../public/img/banner1.jpg" alt="Slide 1">
-            <img class="slider" src="../public/img/banner2.webp" alt="Slide 2">
-            <img class="slider" src="../public/img/banner3.jpg" alt="Slide 3">
-            <img class="slider" src="../public/img/banner4.jpg" alt="Slide 4">
-            <img class="slider" src="../public/img/banner5.jpg" alt="Slide 5">
-        </div>
-
-
-        <div class="homeHeard">
-            <h2>CÙNG KHÁM PHÁ TRẢI NGHIỆM</h2>
-            <b>Hãy chọn một điểm đến du lịch nổi tiếng dưới đây để khám phá các chuyến đi độc quyền của chúng tôi với mức giá vô cùng hợp lý.</b>
-        </div>
-    </div>
-    <!-- Thêm vào vị trí bạn muốn hiển thị danh sách tour -->
-    <div id="tour-list">
-    <?php
-        include_once
-    // Kết nối CSDL (nếu chưa có)
-    // $conn = new mysqli('localhost', 'root', '', 'ten_csdl');
-    // if ($conn->connect_error) die("Kết nối thất bại: " . $conn->connect_error);
-    // Kết nối CSDL (sửa lại tên database, user, password nếu cần)
-    error_reporting(E_ALL);// Hiển thị tất cả lỗi
-    ini_set('display_errors', 1);// Hiển thị lỗi trên trình duyệt
-
-    $conn = new mysqli('localhost', 'root', '', 'tours');
-    if ($conn->connect_error) {
-    die("Kết nối thất bại: " . $conn->connect_error);}
-    
-
-    $sql = "SELECT id, name, price, stars, image FROM tours ORDER BY RAND() LIMIT 10";
-    $result = $conn->query($sql);
-
-    if ($result && $result->num_rows > 0):
-        while($tour = $result->fetch_assoc()):
-    ?>
-
-    <div class="tour-item">
-            <img src="../public/img/<?php echo htmlspecialchars($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['name']); ?>" style="width:200px;height:130px;">
-            <h4><?php echo htmlspecialchars($tour['name']); ?></h4>
-            <p>Giá: <?php echo number_format($tour['price'], 0, ',', '.'); ?> VNĐ</p>
-            <p>Số sao: <?php for ($i = 0; $i < $tour['stars']; $i++) echo '⭐'; ?></p>
-            <a href="booking.php?id=<?php echo $tour['id']; ?>" class="btn" onclick="event.stopPropagation();">Đặt Tour</a>
-        </div>
-    <?php
-        endwhile;
-    else:
-        echo "<p>Không có tour nào.</p>";
-    endif;
-    ?> 
-    </div>
-    
-    <h3>CÁC TOUR TRONG NƯỚC</h3>
-    <div id="tour-list">
-    <?php
-        $sql_domestic = "SELECT id, name, price, stars, image FROM tours WHERE type='domestic' ORDER BY RAND() lIMIT 15";
-        $result_domestic = $conn->query($sql_domestic);
-        if ($result_domestic && $result_domestic->num_rows > 0):
-            while($tour = $result_domestic->fetch_assoc()):
-    ?>
-        <div class="tour-item">
-            <img src="../public/img/<?php echo htmlspecialchars($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['name']); ?>" style="width:200px;height:130px;">
-            <h4><?php echo htmlspecialchars($tour['name']); ?></h4>
-            <p>Giá: <?php echo number_format($tour['price'], 0, ',', '.'); ?> VNĐ</p>
-            <p>Số sao: <?php for ($i = 0; $i < $tour['stars']; $i++) echo '⭐'; ?></p>
-            <a href="booking.php?id=<?php echo $tour['id']; ?>" class="btn" onclick="event.stopPropagation();">Đặt Tour</a>
-        </div>
-    <?php
-            endwhile;
-        else:
-            echo "<p>Không có tour trong nước.</p>";
-        endif;
-    ?>
+        <?php endif; ?>
     </div>
 
-    <h3>CÁC TOUR NƯỚC NGOÀI</h3>
-    <div id="tour-list">
-    <?php
-        $sql_international = "SELECT id, name, price, stars, image FROM tours WHERE type='international' ORDER BY RAND() LIMIT 10";
-        $result_international = $conn->query($sql_international);
-        if ($result_international && $result_international->num_rows > 0):
-            while($tour = $result_international->fetch_assoc()):
-    ?>
-        <div class="tour-item">
-            <img src="../public/img/<?php echo htmlspecialchars($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['name']); ?>" style="width:200px;height:130px;">
-            <h4><?php echo htmlspecialchars($tour['name']); ?></h4>
-            <p>Giá: <?php echo number_format($tour['price'], 0, ',', '.'); ?> VNĐ</p>
-            <p>Số sao: <?php for ($i = 0; $i < $tour['stars']; $i++) echo '⭐'; ?></p>
-            <a href="booking.php?id=<?php echo $tour['id']; ?>" class="btn" onclick="event.stopPropagation();">Đặt Tour</a>
-        </div>
-    <?php
-            endwhile;
-        else:
-            echo "<p>Không có tour nước ngoài.</p>";
-        endif;
-    ?>
-    </div>
-
-    <!-- Thêm vào cuối file home.php, sau các script khác -->
-<script src="../public/js/main.js"></script>
-  
-    
+    <?php include_once 'footer.php'; ?>
+</body>
+</html>

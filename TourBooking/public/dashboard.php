@@ -16,5 +16,9 @@ require_once __DIR__ . '/../guards/auth_guard.php';
         <a href=\"user_management.php\">Quản lý tài khoản</a><br>
     <?php endif; ?>
     <a href=\"login.php\">Đăng xuất</a>
+<?php
+    include_once 'home.php';
+    
+ ?>
 </body>
 </html>

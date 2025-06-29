@@ -9,6 +9,7 @@ class AuthController {
         require_once __DIR__ . '/../views/login_view.php';
     }
 
+
     public function handleLogin() {
     $error_message = '';
 
@@ -30,7 +31,7 @@ class AuthController {
                 $_SESSION['user_name'] = $user['name'];
                 $_SESSION['user_role_id'] = $user['role_id'];
 
-                header('Location: /dashboard');
+                header('Location: /home');
                 exit();
             } else {
                 $error_message = 'Email hoặc mật khẩu không chính xác.';
