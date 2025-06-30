@@ -1,73 +1,166 @@
 <?php
-// Kết nối CSDL
-$conn = new mysqli('localhost', 'root', '', 'tours');
-if ($conn->connect_error) {
-    die("Kết nối thất bại: " . $conn->connect_error);
+require_once __DIR__ . '/../models/TourModel.php';
+
+if (!isset($_GET['id']) || empty($_GET['id'])) {
+    echo "<h3>Không tìm thấy tour. Vui lòng kiểm tra liên kết.</h3>";
+    return;
 }
-$id = isset($_GET['id']) ? intval($_GET['id']) : 0;
-$sql = "SELECT * FROM tours WHERE id = $id";
-$result = $conn->query($sql);
-if ($result && $result->num_rows > 0) {
-    $tour = $result->fetch_assoc();
-} else {
-    echo "<p>Không tìm thấy tour.</p>";
-    exit;
+
+$tourInfo = getTourById($_GET['id']);
+
+if (!$tourInfo) {
+    echo "<h3>Không tìm thấy tour. Vui lòng kiểm tra lại.</h3>";
+    return;
+}
+
+$priceAfterDiscount = $tourInfo['price'] * (1 - $tourInfo['discount_percent'] / 100);
+
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    require_once __DIR__ . '/../config/database.php';
+    if (session_status() === PHP_SESSION_NONE) session_start();
+
+    if (!isset($_SESSION['user_id'])) {
+        echo "<script>alert('Vui lòng đăng nhập để đặt tour.'); window.location.href='/Booking/ltWeb/TourBooking/public/login';</script>";
+        return;
+    }
+
+    $people = (int)$_POST['quantity'];
+    $days = (int)$_POST['days'];
+    $startDate = $_POST['start_date'];
+    $endDate = $_POST['end_date'];
+    $totalPrice = $priceAfterDiscount * $people * $days;
+
+    $db = connect_db();
+    $query = $db->prepare("INSERT INTO bookings (user_id, tour_id, quantity, total_price, start_date, end_date) VALUES (?, ?, ?, ?, ?, ?)");
+    $query->execute([
+        $_SESSION['user_id'], $tourInfo['id'], $people, $totalPrice, $startDate, $endDate
+    ]);
+
+    echo "<script>alert('Đặt tour thành công!'); window.location.href='/Booking/ltWeb/TourBooking/public/my_bookings';</script>";
+    return;
 }
 ?>
-<!DOCTYPE html>
-<html lang="vi">
-<head>
-    <meta charset="UTF-8">
-    <title>Chi tiết tour - <?php echo htmlspecialchars($tour['name']); ?></title>
-    <link rel="stylesheet" href="../public/css/style.css">
-    <style>
-        .tour-detail-container {
-            max-width: 700px;
-            margin: 40px auto;
-            background: #fff;
-            border-radius: 10px;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
-            padding: 32px;
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+<link rel="stylesheet" href="../public/css/tour_detail.css">
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+<script>
+document.addEventListener('DOMContentLoaded', () => {
+    const quantity = document.getElementById('quantity');
+    const totalPrice = document.getElementById('total-price');
+    const daysInput = document.getElementById('days');
+    const daysCount = document.getElementById('days-count');
+    const startHidden = document.getElementById('start_date');
+    const endHidden = document.getElementById('end_date');
+    const base = <?= $priceAfterDiscount ?>;
+
+    flatpickr("#date_range", {
+        mode: "range",
+        dateFormat: "Y-m-d",
+       
+        onChange: (dates) => {
+            if (dates.length === 2) {
+                const [start, end] = dates;
+                const days = Math.ceil((end - start) / (1000 * 60 * 60 * 24)) + 1;
+
+                startHidden.value = start.toISOString().split('T')[0];
+                endHidden.value = end.toISOString().split('T')[0];
+                daysInput.value = days;
+                daysCount.textContent = days;
+
+                updateTotal();
+            }
         }
-        .tour-detail-container img {
-            width: 100%;
-            max-width: 400px;
-            border-radius: 8px;
-            margin-bottom: 20px;
-            object-fit: cover;
-        }
-        .tour-detail-container h2 {
-            color: #1976d2;
-        }
-        .tour-detail-container p {
-            font-size: 1.1rem;
-        }
-        .tour-detail-container .btn {
-            display: inline-block;
-            margin-top: 18px;
-            background: #1976d2;
-            color: #fff;
-            padding: 10px 28px;
-            border-radius: 5px;
-            text-decoration: none;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .tour-detail-container .btn:hover {
-            background: #0d47a1;
-        }
-    </style>
-</head>
-<body>
-    <div class="tour-detail-container">
-        <img src="../public/img/<?php echo htmlspecialchars($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['name']); ?>">
-        <h2><?php echo htmlspecialchars($tour['name']); ?></h2>
-        <p><strong>Giá:</strong> <?php echo number_format($tour['price'], 0, ',', '.'); ?> VNĐ</p>
-        <p><strong>Số sao:</strong> <?php for ($i = 0; $i < $tour['stars']; $i++) echo '⭐'; ?></p>
-        <p><strong>Loại tour:</strong> <?php echo $tour['type'] == 'domestic' ? 'Trong nước' : 'Nước ngoài'; ?></p>
-        <!-- Thêm các thông tin khác nếu có, ví dụ: mô tả, lịch trình,... -->
-        <a href="booking.php?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
-        <a href="home.php" class="btn" style="background:#888;margin-left:10px;">Quay lại</a>
-    </div>
-</body>
-</html>
+    });
+
+    quantity.addEventListener('input', updateTotal);
+
+    function updateTotal() {
+        const qty = parseInt(quantity.value) || 0;
+        const days = parseInt(daysInput.value) || 0;
+        const total = base * qty * days;
+        totalPrice.textContent = total.toLocaleString('vi-VN') + '₫';
+    }
+
+    const previews = document.querySelectorAll('.gallery-preview img');
+    const mainImg = document.querySelector('.main-image');
+    previews.forEach(img => {
+        img.addEventListener('click', () => {
+            mainImg.src = img.src;
+        });
+    });
+});
+
+function showTab(id) {
+    document.querySelectorAll('.tab-content').forEach(e => e.style.display = 'none');
+    document.querySelectorAll('.tab-list li').forEach(e => e.classList.remove('active'));
+    document.getElementById(id).style.display = 'block';
+    event.target.classList.add('active');
+}
+</script>
+
+<div class="container">
+  <div class="tour-hero">
+      <div class="tour-gallery">
+          <img class="main-image" src="/Booking/ltWeb/TourBooking/public/img/<?= $tourInfo['image'] ?>">
+          <div class="gallery-preview">
+              <?php for ($i = 1; $i <= 5; $i++): ?>
+                  <img src="/Booking/ltWeb/TourBooking/public/img/<?= $tourInfo['image'] ?>">
+              <?php endfor; ?>
+          </div>
+      </div>
+      <div class="tour-summary">
+          <h1><?= $tourInfo['title'] ?></h1>
+          <p class="address">📍 <?= $tourInfo['location'] ?></p>
+          <p class="stars">⭐ <?= $tourInfo['stars'] ?>/5</p>
+          <p class="desc"><?= $tourInfo['description'] ?></p>
+          <ul class="features">
+              <li><b>Thời gian:</b> <?= $tourInfo['duration_days'] ?> ngày</li>
+              <li><b>Ngày:</b> <?= $tourInfo['start_date'] ?> đến <?= $tourInfo['end_date'] ?></li>
+              <li><b>Loại tour:</b> <?= $tourInfo['loai_tour'] === 'trongnuoc' ? 'Trong nước' : 'Nước ngoài' ?></li>
+          </ul>
+          <div class="price-box">
+              <?php if ($tourInfo['discount_percent'] > 0): ?>
+                  <span class="old-price"><del><?= number_format($tourInfo['price']) ?>₫</del></span>
+                  <span class="final-price text-danger fw-bold"><?= number_format($priceAfterDiscount) ?>₫ / người / ngày</span>
+              <?php else: ?>
+                  <span class="final-price fw-bold text-danger"><?= number_format($tourInfo['price']) ?>₫ / người / ngày</span>
+              <?php endif; ?>
+          </div>
+
+          <form method="POST" class="tour-book-form">
+              <label for="date_range">Chọn ngày:</label>
+              <input type="text" id="date_range" placeholder="Chọn ngày bắt đầu và kết thúc" required>
+              <input type="hidden" name="start_date" id="start_date">
+              <input type="hidden" name="end_date" id="end_date">
+
+              <label for="quantity">Số người:</label>
+              <input type="number" name="quantity" id="quantity" min="1" value="1" required>
+
+              <input type="hidden" name="days" id="days">
+              <p>Số ngày: <strong id="days-count">0</strong></p>
+
+              <div>Tổng giá: <strong id="total-price"><?= number_format($priceAfterDiscount) ?>₫</strong></div>
+              <button type="submit">Đặt tour ngay</button>
+          </form>
+      </div>
+  </div>
+
+  <div class="tour-tabs">
+      <ul class="tab-list">
+          <li class="active" onclick="showTab('features')">✨ Điểm nổi bật</li>
+          <li onclick="showTab('facilities')">🛎 Tiện ích</li>
+          <li onclick="showTab('map')">📍 Vị trí</li>
+          <li onclick="showTab('reviews')">🗣 Đánh giá</li>
+      </ul>
+      <div class="tab-wrap">
+          <div class="tab-content" id="features">
+              <ul>
+                  <li>✔ Gần bãi biển</li>
+                  <li>✔ Đưa đón sân bay</li>
+                  <li>✔ Ngắm cảnh đẹp</li>
+                  <li>✔ Trải nghiệm địa phương</li>
+              </ul>
+          </div>
+          <div class="tab-content" id
