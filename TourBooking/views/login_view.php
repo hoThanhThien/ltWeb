@@ -44,5 +44,25 @@
             <p>Chưa có tài khoản? <a href="/register">Đăng ký ngay</a></p>
         </div>
     </div>
+    <script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Đăng ký
+    var regLinks = document.querySelectorAll('.link-login, .link a[href="/register"]');
+    regLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.parent.postMessage('open-register', '*');
+        });
+    });
+    // Đăng nhập
+    var loginLinks = document.querySelectorAll('.link-login[href="/login"], .form-footer a[href="/login"]');
+    loginLinks.forEach(function(link) {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            window.parent.postMessage('open-login', '*');
+        });
+    });
+});
+</script>
 </body>
 </html>

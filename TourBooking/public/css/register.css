@@ -1,79 +1,39 @@
-body {
-    font-family: 'Arial', sans-serif;
-    background-image : url('../img/bg/bgreister2.jpg');
-    border-image-width: 1417px;
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
-    background-attachment: fixed;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    margin: 0;
+.login-container, .form-register {
+    background: #fff;
+    padding: 40px 32px 32px 32px;
+    border-radius: 16px;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.10);
+    max-width: 350px;
+    margin: 0 auto;
 }
-
-.form-register {
-    background-color: white;
-    padding: 30px;
-    border-radius: 12px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
-    width: 400px;
-}
-
-.form-title {
-    text-align: center;
-    color: #333;
-}
-
-label {
-    display: block;
-    margin-top: 15px;
-    font-weight: bold;
-}
-
-.input-field {
-    width: 100%;
-    padding: 10px;
-    margin-top: 5px;
-    border: 1px solid #ccc;
-    border-radius: 6px;
-    box-sizing: border-box;
-}
-
-.btn-submit {
+input[type="email"], input[type="password"], input[type="text"] {
     width: 100%;
     padding: 12px;
-    margin-top: 20px;
-    background-color: #2575fc;
-    border: none;
-    color: white;
-    font-size: 16px;
+    border: 1px solid #ddd;
     border-radius: 6px;
+    margin-bottom: 18px;
+    font-size: 15px;
+    background: #f8fafd;
+    transition: border 0.2s;
+}
+input[type="email"]:focus, input[type="password"]:focus, input[type="text"]:focus {
+    border: 1.5px solid #007bff;
+    outline: none;
+}
+button, .btn-submit {
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(90deg, #007bff 60%, #00c6ff 100%);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    font-size: 16px;
+    font-weight: bold;
     cursor: pointer;
-    transition: background-color 0.3s;
+    margin-top: 10px;
+    box-shadow: 0 2px 8px rgba(0,123,255,0.08);
+    transition: background 0.2s;
 }
-
-.btn-submit:hover {
-    background-color: #6a11cb;
-}
-
-.form-footer {
-    text-align: center;
-    margin-top: 15px;
-}
-
-.link-login {
-    color: #2575fc;
-    text-decoration: none;
-}
-
-.link-login:hover {
-    text-decoration: underline;
-}
-
-.message-error {
-    color: red;
-    font-size: 14px;
-    margin-top: 5px;
+button:hover, .btn-submit:hover {
+    background: linear-gradient(90deg, #0056b3 60%, #00aaff 100%);
 }
