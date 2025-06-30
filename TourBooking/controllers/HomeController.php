@@ -1,4 +1,5 @@
 <?php
+
 require_once __DIR__ . '/../models/Tour.php';
 
 class HomeController {
@@ -6,26 +7,39 @@ class HomeController {
         $tourModel = new Tour();
 
         // Xử lý filter
-        $filter = isset($_GET['filter']) ? $_GET['filter'] : null;
+        $filter = $_GET['filter'] ?? null;
 
         // Xử lý phân trang
-        $page = isset($_GET['page']) ? max(1, (int)$_GET['page']) : 1;
-        $limit =2;
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $limit = 8;
         $offset = ($page - 1) * $limit;
 
-        // Đếm tổng tour theo filter
-        $totalTours = $tourModel->countTours($filter);
-        $totalPages = ceil($totalTours / $limit);
+        // Lấy dữ liệu theo filter
+        switch ($filter) {
+            case 'domestic':
+                $randomTours = [];
+                $domesticTours = $tourModel->getTours('trongnuoc', $limit, $offset);
+                $internationalTours = [];
+                $totalTours = $tourModel->countTours('trongnuoc');
+                break;
+            case 'international':
+                $randomTours = [];
+                $domesticTours = [];
+                $internationalTours = $tourModel->getTours('nuocngoai', $limit, $offset);
+                $totalTours = $tourModel->countTours('nuocngoai');
+                break;
+            case 'random-tours':
+            default:
+                $randomTours = $tourModel->getTours(null, $limit, $offset);
+                $domesticTours = [];
+                $internationalTours = [];
+                $totalTours = $tourModel->countTours(null);
+                break;
+        }
+        $totalPages = max(1, ceil($totalTours / $limit));
 
-        // Lấy tour cho trang hiện tại
-        $tours = $tourModel->getTours($filter, $limit, $offset);
-
-        // Lấy thêm data nếu cần (ví dụ: tour ngẫu nhiên, trong nước, nước ngoài cho trang "Tất cả")
-        $randomTours = $tourModel->getTours(null, 10);
-        $domesticTours = $tourModel->getTours('trongnuoc', 15);
-        $internationalTours = $tourModel->getTours('nuocngoai', 10);
-
-        // Truyền tất cả biến qua view
+        // Truyền biến sang view
         require __DIR__ . '/../views/home.php';
     }
 }
+?>
