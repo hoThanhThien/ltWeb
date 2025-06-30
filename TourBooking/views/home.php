@@ -1,42 +1,12 @@
 <?php
 include_once 'header.php';
 require_once '../models/Tour.php';
-
-$tourModel = new Tour();
-
-$filter = $_GET['filter'] ?? null;
-$page = max(1, intval($_GET['page'] ?? 1));
-$limit = 10;
-$offset = ($page - 1) * $limit;
-
+require_once '../controllers/HomeController.php';
 // Hàm gọn để xử lý ảnh
 function getImageSrc($image) {
     return preg_match('/^https?:\/\//i', $image) ? htmlspecialchars($image) : '../public/img/' . htmlspecialchars($image);
 }
 
-// Lấy tour + tính tổng để phân trang
-switch ($filter) {
-    case 'domestic':
-        $randomTours = [];
-        $domesticTours = $tourModel->getTours('trongnuoc', $limit, $offset);
-        $internationalTours = [];
-        $totalTours = $tourModel->countTours('trongnuoc');
-        break;
-    case 'international':
-        $randomTours = [];
-        $domesticTours = [];
-        $internationalTours = $tourModel->getTours('nuocngoai', $limit, $offset);
-        $totalTours = $tourModel->countTours('nuocngoai');
-        break;
-    case 'random-tours':
-    default:
-        $randomTours = $tourModel->getTours(null, $limit, $offset);
-        $domesticTours = [];
-        $internationalTours = [];
-        $totalTours = $tourModel->countTours(null);
-        break;
-}
-$totalPages = max(1, ceil($totalTours / $limit));
 ?>
 
 <!DOCTYPE html>
@@ -145,7 +115,7 @@ $totalPages = max(1, ceil($totalTours / $limit));
         </section>
         <?php endif; ?>
 
-        <?php if ($totalPages > 1): ?>
+         <?php if ($totalPages > 1): ?>
         <div class="pagination">
             <?php for ($i = 1; $i <= $totalPages; $i++): ?>
                 <a href="?filter=<?php echo htmlspecialchars($filter); ?>&page=<?php echo $i; ?>"
@@ -154,7 +124,7 @@ $totalPages = max(1, ceil($totalTours / $limit));
                 </a>
             <?php endfor; ?>
         </div>
-        <?php endif; ?>
+    <?php endif; ?>
     </div>
 
     <?php include_once 'footer.php'; ?>
