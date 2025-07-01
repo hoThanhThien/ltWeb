@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -8,6 +9,7 @@
     <title>ĐẶT TOUR TRỌN GÓI</title>
     <script src="/public/js/main.js"></script>
 </head>
+
 <body>
     <script src="../public/js/main.js"></script>
     <div class="Header">

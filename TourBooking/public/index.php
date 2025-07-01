@@ -7,14 +7,13 @@ require_once __DIR__ . '/../controllers/UserManagementController.php';
 require_once __DIR__ . '/../controllers/HomeController.php';
 require_once __DIR__ . '/../controllers/TourController.php';
 // Xác định base URL (đường dẫn gốc đến thư mục public)
-$basePath = '/Booking/ltWeb/TourBooking/public';
+$basePath = '/projectPHP/ltWeb/TourBooking/public';
 
 // Lấy URI và bỏ phần base path
 $request_uri = strtok($_SERVER['REQUEST_URI'], '?');
 $request_path = str_replace($basePath, '', $request_uri);
 
 switch ($request_path) {
-    case '':
     case '/':
         header("Location: $basePath/home");
         exit();
@@ -70,11 +69,13 @@ switch ($request_path) {
                 echo '<h3>Thiếu ID tour</h3>';
             }
             break;
-            case '/category':
+        case '/tour_detail':
+                if (isset($_GET['id'])) {
                 $tourController = new TourController();
-                $tourController->showByType($_GET['type'] ?? null);
-                break;
-            case '/tour_detail':
+                $tourController->bookTour($_GET['id']);
+            } else {
+                echo '<h3>Thiếu ID tour</h3>';
+            }
                 include __DIR__ . '/../views/tour_detail.php';
                 break;
     default:

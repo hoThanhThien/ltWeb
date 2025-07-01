@@ -34,20 +34,17 @@ function getImageSrc($image) {
                     <input type="text" id="destination" placeholder="Khám phá cuộc phiêu lưu tiếp theo của bạn — tìm kiếm bất kỳ điểm đến nào">
                 </div>
                 <div class="search-item">
-                    <label for="departure-date">Ngày đi</label>
+                    <label for="departure-date">Địa điểm</label>
                     <input type="text" id="departure-date" readonly>
                 </div>
                 <div class="search-item">
-                    <label for="budget">Ngân sách</label>
-                    <select id="budget">
-                        <option value="">Chọn mức giá</option>
-                    </select>
-                </div>
-                <button class="search-button">
-                    <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-                        <path clip-rule="evenodd" fill-rule="evenodd" d="M9 3.5a5.5 5.5 0 100 11 5.5 5.5 0 000-11zM2 9a7 7 0 1112.452 4.391l3.328 3.329a.75.75 0 11-1.06 1.06l-3.329-3.328A7 7 0 012 9z"></path>
-                    </svg>
+                    <button class="search-button">
+                    <i class="fa fa-search"></i>
+                    Tìm kiếm
                 </button>
+
+                </div>
+                
             </div>
         </div>
 

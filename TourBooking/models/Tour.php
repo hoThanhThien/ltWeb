@@ -41,23 +41,19 @@ public function countTours($type = null) {
     return $stmt->fetchColumn();
 }
 
-function getToursByCategory($categoryId) {
-    global $conn;
-    $stmt = $conn->prepare("SELECT * FROM tours WHERE category_id = ?");
-    $stmt->execute([$categoryId]);
-    return $stmt->fetchAll();
-}
+public function getToursByCategory($categoryId) {
+        $stmt = $this->conn->prepare("SELECT * FROM tours WHERE category_id = ?");
+        $stmt->execute([$categoryId]);
+        return $stmt->fetchAll();
+    }
 
-function getTourById($id) {
-    global $conn;
-    $stmt = $conn->prepare("SELECT * FROM tours WHERE id = ?");
-    $stmt->execute([$id]);
-    return $stmt->fetch();
-}
+    public function getTourById($id) {
+        $stmt = $this->conn->prepare("SELECT * FROM tours WHERE id = ?");
+        $stmt->execute([$id]);
+        return $stmt->fetch();
+    }
 
-function getCategories() {
-    global $conn;
-    return $conn->query("SELECT * FROM categories")->fetchAll();
-}
-
+    public function getCategories() {
+        return $this->conn->query("SELECT * FROM categories")->fetchAll();
+    }
 }
