@@ -1,4 +1,4 @@
-<!-- File: views/login_view.php -->
+
 <!DOCTYPE html>
 <html lang="vi">
 <head>

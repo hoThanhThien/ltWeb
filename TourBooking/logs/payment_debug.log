@@ -1,0 +1,38 @@
+Test write from test_write.php OK at 2025-07-02 10:12:57
+[2025-07-02 10:21:35] INSECURE Webhook Received: 
+[2025-07-02 10:21:35] Webhook Error: Invalid data structure.
+Test write from test_write.php OK at 2025-07-02 10:53:01
+[2025-07-02 11:02:56] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:04:01] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:19:41] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:19:41] DATABASE ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tour_booking_db.sepay_transactions' doesn't exist
+[2025-07-02 11:24:02] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:24:02] Found Booking ID: 102
+[2025-07-02 11:24:02] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:24:02] DATABASE ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'paid_at' in 'field list'
+[2025-07-02 11:26:48] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:26:48] DATABASE ERROR: SQLSTATE[42S02]: Base table or view not found: 1146 Table 'tour_booking_db.tb_transition' doesn't exist
+[2025-07-02 11:30:10] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:30:10] Found Booking ID: 102
+[2025-07-02 11:30:10] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:30:10] DATABASE ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'payment_method' in 'field list'
+[2025-07-02 11:30:48] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:30:48] Found Booking ID: 102
+[2025-07-02 11:30:48] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:30:48] DATABASE ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'payment_method' in 'field list'
+[2025-07-02 11:33:50] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:33:50] Found Booking ID: 102
+[2025-07-02 11:33:50] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:33:50] DATABASE ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'payment_method' in 'field list'
+[2025-07-02 11:33:57] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:33:57] Found Booking ID: 102
+[2025-07-02 11:33:57] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:33:57] DATABASE ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'payment_method' in 'field list'
+[2025-07-02 11:34:01] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:34:01] Found Booking ID: 102
+[2025-07-02 11:34:01] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:34:01] DATABASE ERROR: SQLSTATE[42S22]: Column not found: 1054 Unknown column 'payment_method' in 'field list'
+[2025-07-02 11:35:48] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-02 15:52:00","accountNumber":"0375227764","subAccount":null,"code":"DH102","content":"DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferType":"in","description":"BankAPINotify DH102 FT25183502456710   Ma giao dich  Trace892046 Trace 892046","transferAmount":2000,"referenceCode":"FT25183000521350","accumulated":0,"id":16563315}
+[2025-07-02 11:35:48] Found Booking ID: 102
+[2025-07-02 11:35:48] DB Check for Booking 102: Found: Yes. Amount received: 2000
+[2025-07-02 11:35:48] SUCCESS: Booking ID 102 updated to confirmed.
