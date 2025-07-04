@@ -32,7 +32,45 @@ switch ($request_path) {
         $homeController = new HomeController();
         $homeController->index();
         break;
+    
+    case '/user_management':
+    // Bước 1: Kiểm tra xem người dùng đã đăng nhập chưa
+    if (!isset($_SESSION['user_id'])) {
+        header("Location: /login");
+        exit();
+    }
 
+    // Bước 2: Kiểm tra xem người dùng có phải là admin không
+    // Lưu ý: Dựa theo code trước, bạn dùng 'user_role_id'. Giả sử 1 là admin.
+    if ($_SESSION['user_role_id'] != 1) { 
+        // Nếu không phải admin, chuyển về trang chủ và dừng lại
+        header("Location: /home");
+        exit();
+    }
+
+    // Nếu code chạy được đến đây, có nghĩa người dùng LÀ ADMIN
+    // -> Cho phép họ truy cập và hiển thị trang.
+    $userManagementController = new UserManagementController();
+    $userManagementController->index();
+    break; // Kết thúc case
+
+    case '/register':
+        $authController = new AuthController();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authController->handleRegistration();
+        } else {
+            $authController->showRegisterForm();
+        }
+        break;
+
+    case '/login':
+        $authController = new AuthController();
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $authController->handleLogin();
+        } else {
+            $authController->showLoginForm();
+        }
+        break;
 
     case '/logout':
         $authController = new AuthController();

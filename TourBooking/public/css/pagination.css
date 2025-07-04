@@ -1,0 +1,47 @@
+
+/* Pagination  */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px; /* Khoảng cách giữa các nút */
+    margin: 40px 0;
+}
+
+/* Style chung cho cả link (a) và dấu ba chấm (...) */
+.pagination a,
+.pagination .ellipsis {
+    display: inline-block;
+    padding: 10px 15px;
+    text-decoration: none;
+    border-radius: 6px;
+    font-weight: 500;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Style riêng cho các link có thể bấm */
+.pagination a {
+    background-color: #dfe6e9;
+    color: #2d3436;
+    cursor: pointer;
+}
+
+/* Style cho link khi hover */
+.pagination a:hover {
+    background-color: #74b9ff;
+    color: white;
+}
+
+/* Style cho link của trang hiện tại */
+.pagination a.active {
+    background-color: #0984e3;
+    color: white;
+    font-weight: 700;
+}
+
+/* Style cho dấu ba chấm "..." */
+.pagination .ellipsis {
+    background-color: transparent;
+    color: #888;
+    cursor: default; /* Chuột hiển thị mặc định, không phải bàn tay */
+}

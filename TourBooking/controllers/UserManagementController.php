@@ -12,7 +12,7 @@ class UserManagementController {
         }
 
         // Chỉ cho phép admin truy cập
-        if ($_SESSION['user_role'] !== 'admin') {
+        if (!isset($_SESSION['user_role_id']) || $_SESSION['user_role_id'] != 1) {
             echo '<h2>Bạn không có quyền truy cập trang này!</h2>';
             echo '<a href="/dashboard">Về Dashboard</a>';
             exit();

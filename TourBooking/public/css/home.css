@@ -19,6 +19,7 @@ h3 {
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
     padding: 0 20px 50px;
+    margin-top: 200px;
 }
 
 .tour-item {
@@ -26,20 +27,31 @@ h3 {
     border-radius: 15px;
     overflow: hidden;
     box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    display: flex;
-    flex-direction: column;
-}
-
-.tour-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
+    display: flex; /* Quan trọng: Bật Flexbox */
+    flex-direction: column; /* Quan trọng: Sắp xếp theo chiều dọc */
 }
 
 .tour-item img {
     width: 100%;
     height: 200px;
     object-fit: cover;
+}
+
+/* Khối nội dung này sẽ tự động co giãn */
+.tour-item .tour-content {
+    padding: 15px;
+    flex-grow: 1; /* Quan trọng nhất: Đẩy nút xuống dưới */
+}
+
+/* Căn lề cho nút */
+.tour-item .btn {
+    margin: 0 15px 15px;
+    /* Các thuộc tính khác của nút giữ nguyên */
+}
+
+.tour-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0,0,0,0.25);
 }
 
 .tour-item h3 {
@@ -60,11 +72,11 @@ h3 {
 }
 
 .tour-item .btn {
-    margin: 0 15px 15px;
+    margin: 10px 10px 10px 10px;
     display: block;
     width: calc(100% - 30px);
     text-align: center;
-    padding: 14px 0;
+    padding: 14px ;
     background: linear-gradient(90deg, #0984e3 60%, #00b894 100%);
     color: #fff;
     text-decoration: none;
@@ -85,33 +97,6 @@ h3 {
     box-shadow: 0 6px 20px rgba(9,132,227,0.15);
 }
 
-/* Pagination */
-.pagination {
-    text-align: center;
-    margin: 30px 0;
-}
-
-.pagination a {
-    display: inline-block;
-    margin: 0 5px;
-    padding: 10px 15px;
-    background: #dfe6e9;
-    color: #2d3436;
-    text-decoration: none;
-    border-radius: 6px;
-    font-weight: 500;
-    transition: background 0.3s ease;
-}
-
-.pagination a:hover {
-    background: #74b9ff;
-    color: white;
-}
-
-.pagination a.active {
-    background: #0984e3;
-    color: white;
-}
 /* --- CSS cho menu người dùng --- */
 
 /* Thẻ div cha chứa menu */
@@ -120,6 +105,17 @@ h3 {
     display: inline-block; /* Để nó nằm cùng hàng với các link khác */
 }
 
+/* Style cho các nút bị vô hiệu hóa (disabled) */
+.pagination .disabled {
+    background-color: #e9ecef; /* Màu nền mờ */
+    color: #adb5bd;          /* Màu chữ mờ */
+    cursor: not-allowed;    /* Con trỏ chuột bị cấm */
+}
+
+/* Thêm một chút khoảng cách cho nút điều hướng nếu cần */
+.pagination .nav-btn {
+    font-weight: 600;
+}
 /* Menu con thả xuống */
 .user-menu .dropdown-content {
     display: none; /* Mặc định ẩn đi */

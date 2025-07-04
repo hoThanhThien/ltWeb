@@ -11,7 +11,7 @@ class HomeController {
 
         // Xử lý phân trang
         $page = max(1, (int)($_GET['page'] ?? 1));
-        $limit = 8;
+        $limit = 6;
         $offset = ($page - 1) * $limit;
 
         // Lấy dữ liệu theo filter

@@ -92,6 +92,7 @@ a {
     font-size: 20px;
     flex-wrap: wrap;
     border-bottom: 1px solid black;
+       
 }
 
 .homeSearch-title a {
@@ -318,4 +319,3 @@ footer a {
         font-size: 22px;
     }
 }
-

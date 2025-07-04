@@ -18,10 +18,9 @@ class AuthController {
         header('Location: /home');
         exit();
     }
-
-    public function showRegisterForm() {
-        require_once __DIR__ . '/../views/home.php';
-    }
+public function showRegisterForm() {
+    require_once __DIR__ . '/../views/register_view.php';
+}
 
     
 
@@ -49,7 +48,7 @@ public function handleLogin() {
         $userModel = new User();
         $user = $userModel->findUserByEmail($email);
 
-        // Nếu tìm thấy user và mật khẩu khớp
+         // Nếu tìm thấy user và mật khẩu khớp
         if ($user && password_verify($password, $user['password'])) {
             // Bắt đầu session nếu chưa có
             if (session_status() == PHP_SESSION_NONE) {
@@ -60,9 +59,17 @@ public function handleLogin() {
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_role_id'] = $user['role_id'];
 
-            // DÒNG QUAN TRỌNG NHẤT LÀ ĐÂY
-            // Ra lệnh cho trang cha (bên ngoài iframe) tải lại
-            echo "<script>parent.location.reload();</script>";
+            // --- PHẦN THAY ĐỔI QUAN TRỌNG BẮT ĐẦU TỪ ĐÂY ---
+
+            // Giả sử role_id = 1 là của Admin (bạn hãy kiểm tra lại trong DB của mình)
+            if ($user['role_id'] == 1) {
+                // Nếu là ADMIN: Ra lệnh cho trang cha chuyển hướng đến trang quản lý
+                echo "<script>parent.location.href = '/user_management';</script>";
+            } else {
+                // Nếu là USER thường: Ra lệnh cho trang cha tải lại (để cập nhật trạng thái đăng nhập)
+                echo "<script>parent.location.reload();</script>";
+            }
+            
             exit(); // Dừng thực thi ngay lập tức
 
         } else {

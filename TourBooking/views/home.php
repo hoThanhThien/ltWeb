@@ -21,13 +21,16 @@ function getImageSrc($image) {
 </head>
 
 <body>
-    <div id="home">
+     <div id="home"></div>
+    
         <div class="homeSearch">
+            
             <div class="homeSearch-title">
                 <div><a href="?filter=random-tours">Tất cả</a></div>
                 <div><a href="?filter=domestic">Tour trong nước</a></div>
                 <div><a href="?filter=international">Tour nước ngoài</a></div>
             </div>
+            
             <div class="search-section">
                 <div class="search-item">
                     <label for="destination">Bạn muốn đi đâu?</label>
@@ -48,19 +51,20 @@ function getImageSrc($image) {
             </div>
         </div>
 
-        <div class="slideshow-container">
+        
+    </div>
+
+    <div class="slideshow-container">
             <img class="slider active" src="../img/banner1.jpg" alt="Slide 1">
             <img class="slider" src="../img/banner2.webp" alt="Slide 2">
             <img class="slider" src="../img/banner3.jpg" alt="Slide 3">
             <img class="slider" src="../img/banner4.jpg" alt="Slide 4">
             <img class="slider" src="../img/banner5.jpg" alt="Slide 5">
         </div>
-    </div>
-<br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/><br/>
     <div class="main-content">
         <?php if (!empty($randomTours) && ($filter === 'random-tours' || !$filter)): ?>
         <section class="random-tours">
-            <h3>TOUR NGẪU NHIÊN</h3>
+            <div><h3>TOUR NGẪU NHIÊN</h3></div>
             <div id="tour-list">
                 <?php foreach ($randomTours as $tour): ?>
                     <div class="tour-item">
@@ -111,17 +115,8 @@ function getImageSrc($image) {
             </div>
         </section>
         <?php endif; ?>
-
-         <?php if ($totalPages > 1): ?>
-        <div class="pagination">
-            <?php for ($i = 1; $i <= $totalPages; $i++): ?>
-                <a href="?filter=<?php echo htmlspecialchars($filter); ?>&page=<?php echo $i; ?>"
-                   class="<?php echo $i == $page ? 'active' : ''; ?>">
-                    <?php echo $i; ?>
-                </a>
-            <?php endfor; ?>
-        </div>
-    <?php endif; ?>
+                
+        <?php include 'pagination.php'; ?>
     </div>
 
     <?php include_once 'footer.php'; ?>
