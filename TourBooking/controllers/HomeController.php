@@ -9,7 +9,7 @@ class HomeController {
         $filter = $_GET['filter'] ?? null;
 
         $page = max(1, (int)($_GET['page'] ?? 1));
-        $limit = 6;
+        $limit = 8;
         $offset = ($page - 1) * $limit;
 
         switch ($filter) {

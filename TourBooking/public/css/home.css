@@ -14,11 +14,12 @@ h3 {
     letter-spacing: 1px;
 }
 
-.tour-list {
+#tour-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 25px;
-    margin-top:10px;
+    padding: 0 20px 50px;
+    margin-top: 20px;
 }
 
 .tour-item {

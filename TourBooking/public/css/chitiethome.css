@@ -65,11 +65,11 @@ a {
     position: relative;
     
     /* Đặt chiều rộng tối đa và căn giữa */
-    max-width: 1200px; /* Chiều rộng lớn nhất của banner, bạn có thể thay đổi */
-    width: 90%;       /* Trên màn hình nhỏ hơn, nó sẽ chiếm 90% */
+    max-width: 1300px; /* Chiều rộng lớn nhất của banner, bạn có thể thay đổi */
+    width: 95%;       /* Trên màn hình nhỏ hơn, nó sẽ chiếm 90% */
     margin: 40px auto; /* Căn giữa theo chiều ngang và tạo khoảng cách trên/dưới */
 
-    height: 500px;    /* Chiều cao của banner, có thể tùy chỉnh */
+    height: 400px;    /* Chiều cao của banner, có thể tùy chỉnh */
     overflow: hidden;
     border-radius: 20px; /* Thêm bo góc cho khối banner mềm mại hơn */
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); /* Thêm bóng đổ để nổi bật */

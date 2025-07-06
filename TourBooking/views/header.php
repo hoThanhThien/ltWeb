@@ -16,9 +16,11 @@
 <body>
     <script src="../public/js/main.js"></script>
     <div class="Header">
-        <div class="logo"><a href="../home"><img src="../img/logo.png" alt="Logo"></a></div>
-         <div class="homeHeard">
-            <h2>CÙNG KHÁ PHÁ TRẢI NGHIỆM</h2>
+        <div class="logo"><a href="../home"><img src="../img/logo.png" alt="Logo"/></a></div>
+        
+            
+        <div class="homeHeard" >
+    <h5><img src="https://cdn-icons-png.flaticon.com/128/5373/5373330.png" width="20px" alt="Logo"/>&nbsp;&nbsp;"Vùng trời quê hương nào cũng là bầu trời Tổ quốc"</h5>
         </div>
         <div class="index_header">
             <a href="?filter=random-tours">Hot</a>
