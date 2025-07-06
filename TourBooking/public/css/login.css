@@ -82,3 +82,24 @@ button:hover {
 .link a:hover {
     text-decoration: underline;
 }
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper {
+    position: relative;
+}
+
+.password-wrapper input[type="password"] {
+    padding-right: 40px; /* Chừa chỗ bên phải để icon không đè lên chữ */
+}
+
+.password-eye {
+    position: absolute;
+    width: 20px;
+    height: 20px;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    cursor: pointer;
+}

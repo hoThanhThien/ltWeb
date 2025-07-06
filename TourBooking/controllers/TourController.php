@@ -13,6 +13,12 @@ class TourController {
         if (session_status() === PHP_SESSION_NONE) session_start();
         $tourModel = new Tour();
         $tour = $tourModel->getTourById($tourId);
+        // Tính discount_price nếu có discount_percent
+if (isset($tour['discount_percent']) && $tour['discount_percent'] > 0) {
+    $tour['discount_price'] = $tour['price'] * (1 - $tour['discount_percent'] / 100);
+} else {
+    $tour['discount_price'] = 0;
+}
         $error = '';
         $success = '';
         $priceAfterDiscount = $tour['price'] * (1 - $tour['discount_percent'] / 100);

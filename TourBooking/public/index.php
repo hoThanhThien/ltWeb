@@ -1,5 +1,7 @@
 <?php
 if (session_status() == PHP_SESSION_NONE) session_start();
+/// Nếu session chưa được khởi tạo, hãy khởi tạo nó
+// lưu trạng thái đăng nhập của người dùng
 
 // Nạp các file cần thiết
 require_once __DIR__ . '/../config/database.php';

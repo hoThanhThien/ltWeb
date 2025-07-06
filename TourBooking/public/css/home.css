@@ -14,12 +14,11 @@ h3 {
     letter-spacing: 1px;
 }
 
-#tour-list {
+.tour-list {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 25px;
-    padding: 0 20px 50px;
-    margin-top: 200px;
+    margin-top:10px;
 }
 
 .tour-item {
@@ -70,11 +69,11 @@ h3 {
     margin: 0 15px 10px;
     color: #f1c40f;
 }
-
+/* Thêm hiệu ứng hover cho hình ảnh và khung nút tour*/
 .tour-item .btn {
-    margin: 10px 10px 10px 10px;
     display: block;
     width: calc(100% - 30px);
+    margin: 10px 15px 10 15px;
     text-align: center;
     padding: 14px ;
     background: linear-gradient(90deg, #0984e3 60%, #00b894 100%);

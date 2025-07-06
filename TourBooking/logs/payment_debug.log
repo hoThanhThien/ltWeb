@@ -36,3 +36,11 @@ Test write from test_write.php OK at 2025-07-02 10:53:01
 [2025-07-02 11:35:48] Found Booking ID: 102
 [2025-07-02 11:35:48] DB Check for Booking 102: Found: Yes. Amount received: 2000
 [2025-07-02 11:35:48] SUCCESS: Booking ID 102 updated to confirmed.
+[2025-07-04 05:03:23] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-04 10:03:00","accountNumber":"0375227764","subAccount":null,"code":"DH106","content":"DH106 FT25185951120749   Ma giao dich  Trace476873 Trace 476873","transferType":"in","description":"BankAPINotify DH106 FT25185951120749   Ma giao dich  Trace476873 Trace 476873","transferAmount":2000,"referenceCode":"FT25185492336800","accumulated":0,"id":16730423}
+[2025-07-04 05:03:23] Found Booking ID: 106
+[2025-07-04 05:03:23] DB Check for Booking 106: Found: Yes. Amount received: 2000
+[2025-07-04 05:03:23] SUCCESS: Booking ID 106 updated to confirmed.
+[2025-07-04 05:48:14] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-04 10:48:00","accountNumber":"0375227764","subAccount":null,"code":"DH107","content":"DH107 FT25185063170441   Ma giao dich  Trace720070 Trace 720070","transferType":"in","description":"BankAPINotify DH107 FT25185063170441   Ma giao dich  Trace720070 Trace 720070","transferAmount":2000,"referenceCode":"FT25185084204265","accumulated":0,"id":16733683}
+[2025-07-04 05:48:14] Found Booking ID: 107
+[2025-07-04 05:48:14] DB Check for Booking 107: Found: Yes. Amount received: 2000
+[2025-07-04 05:48:14] SUCCESS: Booking ID 107 updated to confirmed.

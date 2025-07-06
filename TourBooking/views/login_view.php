@@ -24,6 +24,12 @@
                 <label for="password">Mật khẩu</label>
                 <input type="password" id="password" name="password" required>
             </div>
+            <div class="form-group">
+                <label for="remember-me">
+                    <input type="checkbox" id="remember-me" name="remember_me" <?php echo isset($remember_me) ? 'checked' : ''; ?>>
+                    Ghi nhớ đăng nhập
+                </label>
+            </div>
             <button type="submit">Đăng nhập</button>
         </form>
 

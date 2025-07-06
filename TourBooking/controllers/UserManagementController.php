@@ -3,7 +3,9 @@ require_once __DIR__ . '/../models/User.php';
 
 class UserManagementController {
     public function index() {
-        session_start();
+        if (session_status() === PHP_SESSION_NONE) {
+    session_start();
+}
 
         // Kiểm tra đã đăng nhập chưa
         if (!isset($_SESSION['user_id'])) {

@@ -1,20 +1,21 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const slides = document.querySelectorAll('.slider');
     let index = 0;
+const slides = document.querySelectorAll('.slider');
 
-    function showSlide(i) {
-        slides.forEach(slide => slide.classList.remove('active'));
-        slides[i].classList.add('active');
-    }
+function showSlide(i) {
+    slides.forEach(slide => slide.classList.remove('active'));
+    slides[i].classList.add('active');
+}
 
-    function nextSlide() {
-        index = (index + 1) % slides.length;
-        showSlide(index);
-    }
-
+function nextSlide() {
+    index = (index + 1) % slides.length;
     showSlide(index);
-    setInterval(nextSlide, 4000);
-});$(function() {
+}
+
+setInterval(nextSlide, 3000);
+
+});
+$(function() {
     // Mở modal khi bấm Đăng nhập / Đăng ký
     $('#open-auth-modal').click(function(e) {
         e.preventDefault();

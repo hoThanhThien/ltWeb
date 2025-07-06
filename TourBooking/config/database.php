@@ -3,9 +3,9 @@
 // Chứa thông tin kết nối đến cơ sở dữ liệu
 
 define('DB_HOST', 'localhost');
-define('DB_USER', 'root'); // Thay bằng username của bạn
-define('DB_PASS', ''); // Thay bằng password của bạn
-define('DB_NAME', 'tour_booking_db'); // Thay bằng tên CSDL của bạn
+define('DB_USER', 'root'); // Thay bằng username
+define('DB_PASS', ''); // Thay bằng password 
+define('DB_NAME', 'tour_booking_db'); // Thay bằng tên CSDL 
 define('PAYMENT_BANK_CODE', 'MB');
 define('PAYMENT_ACCOUNT_NUMBER', '0375227764');
 define('PAYMENT_ACCOUNT_NAME', 'CTTNHH DIDI');
