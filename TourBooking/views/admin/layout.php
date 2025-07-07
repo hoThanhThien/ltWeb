@@ -31,7 +31,7 @@
                         </a>
                     </li>
                      <li class="nav-item">
-                        <a href="/user_management" class="nav-link">
+                        <a href="/admin/users" class="nav-link <?php echo ($current_page === 'users') ? 'active' : ''; ?>">
                             <i class="fas fa-users-cog"></i> <span>Quản lý User</span>
                         </a>
                     </li>
@@ -52,7 +52,7 @@
                 <div class="header-right">
                     <div class="user-profile">
                         <img src="https://i.pravatar.cc/40" alt="User Avatar">
-                        <span><?php echo $_SESSION['username'] ?? 'Admin'; ?></span>
+                        <span><?php echo $_SESSION['user_name'] ?? 'Admin'; ?></span>
                         <i class="fas fa-caret-down"></i>
                     </div>
                 </div>

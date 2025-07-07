@@ -1,127 +1,94 @@
 <?php
 if (session_status() == PHP_SESSION_NONE) session_start();
-/// Nếu session chưa được khởi tạo, hãy khởi tạo nó
-// lưu trạng thái đăng nhập của người dùng
 
-// Nạp các file cần thiết
-require_once __DIR__ . '/../config/database.php';
-require_once __DIR__ . '/../controllers/AuthController.php';
-require_once __DIR__ . '/../controllers/UserManagementController.php';
+// Nạp các file controller cần thiết
 require_once __DIR__ . '/../controllers/HomeController.php';
+require_once __DIR__ . '/../controllers/AuthController.php';
 require_once __DIR__ . '/../controllers/TourController.php';
-require_once __DIR__ . '/../controllers/PaymentController.php'; 
+require_once __DIR__ . '/../controllers/PaymentController.php';
+require_once __DIR__ . '/../controllers/AdminController.php'; // Controller trung tâm cho admin
 
-// --- Lưu ý ---
-// 1. dùng  Virtual Host.
-
-
-// 2. Lấy đường dẫn trực tiếp, không cần cắt chuỗi.
+// Lấy đường dẫn yêu cầu
 $request_path = strtok($_SERVER['REQUEST_URI'], '?');
 
-// Dòng log gỡ lỗi
+// Ghi log để gỡ lỗi (tùy chọn)
 file_put_contents(
-    __DIR__ . '/../logs/router_debug.log', 
-    "Timestamp: " . date('Y-m-d H:i:s') . " | Path: [{$request_path}]" . "\n", 
+    __DIR__ . '/../logs/router_debug.log',
+    "Timestamp: " . date('Y-m-d H:i:s') . " | Path: [{$request_path}]" . "\n",
     FILE_APPEND
 );
 
+// Điều hướng dựa trên đường dẫn
 switch ($request_path) {
+    // --- Trang người dùng ---
     case '/':
-        header("Location: /home");
-        exit();
-
     case '/home':
-        $homeController = new HomeController();
-        $homeController->index();
+        (new HomeController())->index();
         break;
     
-    case '/user_management':
-    // Bước 1: Kiểm tra xem người dùng đã đăng nhập chưa
-    if (!isset($_SESSION['user_id'])) {
-        header("Location: /login");
-        exit();
-    }
-
-    // Bước 2: Kiểm tra xem người dùng có phải là admin không
-    // Lưu ý: Dựa theo code trước, bạn dùng 'user_role_id'. Giả sử 1 là admin.
-    if ($_SESSION['user_role_id'] != 1) { 
-        // Nếu không phải admin, chuyển về trang chủ và dừng lại
-        header("Location: /home");
-        exit();
-    }
-
-    // Nếu code chạy được đến đây, có nghĩa người dùng LÀ ADMIN
-    // -> Cho phép họ truy cập và hiển thị trang.
-    $userManagementController = new UserManagementController();
-    $userManagementController->index();
-    break; // Kết thúc case
-
-    case '/register':
-        $authController = new AuthController();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $authController->handleRegistration();
-        } else {
-            $authController->showRegisterForm();
-        }
+    case '/booking':
+        (new TourController())->bookTour($_GET['id']);
         break;
 
+    // --- Xác thực ---
     case '/login':
-        $authController = new AuthController();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $authController->handleLogin();
-        } else {
-            $authController->showLoginForm();
-        }
+        (new AuthController())->handleLogin();
+        break;
+
+    case '/register':
+        (new AuthController())->handleRegistration();
         break;
 
     case '/logout':
-        $authController = new AuthController();
-        $authController->logout();
+        (new AuthController())->logout();
         break;
 
-    case '/dashboard':
-        if (!isset($_SESSION['user_id'])) {
-            header("Location: /login");
-            exit();
-        }
-        echo '<h1>Dashboard</h1>';
-        echo 'Xin chào ' . htmlspecialchars($_SESSION['user_name']) . '. ';
-        echo '<a href="/logout">Đăng xuất</a>';
-        break;
-        
-    case '/booking':
-        if (isset($_GET['id'])) {
-            $tourController = new TourController();
-            $tourController->bookTour($_GET['id']);
-        } else {
-            echo '<h3>Thiếu ID tour</h3>';
-        }
-        break;
-        
-    // --- CHO THANH TOÁN ---
+    // --- Thanh toán ---
     case '/payment':
-        if (isset($_GET['id'])) {
-            $paymentController = new PaymentController();
-            $paymentController->showPaymentPage($_GET['id']);
-        } else {
-            echo '<h3>Thiếu ID đơn hàng</h3>';
-        }
+        (new PaymentController())->showPaymentPage($_GET['id']);
         break;
 
     case '/payment/check_status':
-        $paymentController = new PaymentController();
-        $paymentController->checkStatus();
+        (new PaymentController())->checkStatus();
         break;
-
+    
     case '/payment/webhook':
-        $paymentController = new PaymentController();
-        $paymentController->handleWebhook();
+        (new PaymentController())->handleWebhook();
         break;
 
+    // --- TRANG QUẢN TRỊ (ADMIN) ---
+    case '/admin':
+    case '/admin/dashboard':
+        (new AdminController())->index();
+        break;
+
+    case '/admin/tours':
+        (new AdminController())->listTours();
+        break;
+
+    case '/admin/tours/add':
+        (new AdminController())->addTour();
+        break;
+
+    case '/admin/tours/edit':
+        (new AdminController())->editTour();
+        break;
+
+    case '/admin/tours/delete':
+        (new AdminController())->deleteTour();
+        break;
+    
+    case '/admin/users': // Đường dẫn mới cho quản lý người dùng
+        (new AdminController())->listUsers();
+        break;
+
+    case '/admin/users/delete': // Đường dẫn mới để xóa người dùng
+        (new AdminController())->deleteUser();
+        break;
+
+    // --- Trang mặc định khi không tìm thấy ---
     default:
         http_response_code(404);
-        echo '<h1>404 - Không tìm thấy trang</h1>';
-        echo '<a href="/home">Quay về trang home</a>';
+        require __DIR__ . '/../views/404.php'; 
         break;
 }
-?>

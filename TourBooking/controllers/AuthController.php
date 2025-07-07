@@ -64,7 +64,7 @@ public function handleLogin() {
             // Giả sử role_id = 1 là của Admin (bạn hãy kiểm tra lại trong DB của mình)
             if ($user['role_id'] == 1) {
                 // Nếu là ADMIN: Ra lệnh cho trang cha chuyển hướng đến trang quản lý
-                echo "<script>parent.location.href = '/user_management';</script>";
+                echo "<script>parent.location.href = '/admin';</script>";
             } else {
                 // Nếu là USER thường: Ra lệnh cho trang cha tải lại (để cập nhật trạng thái đăng nhập)
                 echo "<script>parent.location.reload();</script>";
