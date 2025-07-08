@@ -1,0 +1,9 @@
+version: 3
+agent:
+  authtoken: 2zJ71WBvjNzViLsoXHxPmxYhsyS_2xi3uugpx84Epd1iSCFND
+
+tunnels:
+  tour_web:
+    proto: http
+    addr: 80
+    domain: awaited-hog-causal.ngrok-free.app

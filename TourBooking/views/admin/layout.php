@@ -1,78 +1,68 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?php echo $pageTitle ?? 'Admin Dashboard'; ?></title>
-    <link rel="stylesheet" href="/public/css/admin_dashboard.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
-    <style>
-        .ck-editor__editable_inline { min-height: 250px; }
-    </style>
+    <meta charset="utf-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <title>Dashboard - Admin</title>
+
+    <link href="../css/style-vanilla.css" rel="stylesheet" />
+    
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 </head>
-<body>
+<body> <nav class="topnav">
+        <a class="navbar-brand" href="/admin">Admin Panel</a>
+        <button class="sidebar-toggle" id="sidebarToggle">
+            <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>
+        </button>
+    </nav>
 
-    <div class="dashboard-container">
-        <aside class="sidebar">
-            <div class="sidebar-header">
-                <h3>TOURADMIN</h3>
-            </div>
-            <nav class="sidebar-nav">
-                <ul>
-                    <li class="nav-section-title">Navigation</li>
-                    <li class="nav-item">
-                        <a href="/admin/dashboard" class="nav-link <?php echo ($current_page === 'dashboard') ? 'active' : ''; ?>">
-                            <i class="fas fa-tachometer-alt"></i> <span>Dashboard</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/admin/tours" class="nav-link <?php echo ($current_page === 'tours') ? 'active' : ''; ?>">
-                            <i class="fas fa-map-marked-alt"></i> <span>Quản lý Tour</span>
-                        </a>
-                    </li>
-                     <li class="nav-item">
-                        <a href="/admin/users" class="nav-link <?php echo ($current_page === 'users') ? 'active' : ''; ?>">
-                            <i class="fas fa-users-cog"></i> <span>Quản lý User</span>
-                        </a>
-                    </li>
-                    <li class="nav-item">
-                        <a href="/logout" class="nav-link">
-                            <i class="fas fa-sign-out-alt"></i> <span>Đăng xuất</span>
-                        </a>
-                    </li>
-                </ul>
-            </nav>
-        </aside>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sidenav">
+                <div class="sidenav-menu">
+                    <div class="nav-items">
+                        <div class="sidenav-menu-heading">Core</div>
+                        <a class="nav-link" href="/admin">Dashboard</a>
+                        
+                        <div class="sidenav-menu-heading">Quản lý</div>
 
-        <main class="main-content">
-            <header class="main-header">
-                <div class="header-left">
-                    <i class="fas fa-bars"></i>
-                </div>
-                <div class="header-right">
-                    <div class="user-profile">
-                        <img src="https://i.pravatar.cc/40" alt="User Avatar">
-                        <span><?php echo $_SESSION['user_name'] ?? 'Admin'; ?></span>
-                        <i class="fas fa-caret-down"></i>
+                        <a class="nav-link collapsible-toggle" href="#" data-target="#collapseTour">
+                            Quản lý Tour
+                            <div class="sidenav-collapse-arrow">▼</div>
+                        </a>
+                        <div class="collapse-menu" id="collapseTour">
+                            <a class="nav-link" href="../admin/tours">Danh sách Tour</a>
+                            <a class="nav-link" href="../admin/add-tour">Thêm Tour</a>
+                        </div>
+
+                        <a class="nav-link collapsible-toggle" href="#" data-target="#collapseUser">
+                            Quản lý User
+                            <div class="sidenav-collapse-arrow">▼</div>
+                        </a>
+                        <div class="collapse-menu" id="collapseUser">
+                            <a class="nav-link" href="../admin/users">Danh sách User</a>
+                        </div>
                     </div>
                 </div>
-            </header>
-
-            <?php echo $content; ?>
-
-        </main>
+                <div class="sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    <?= htmlspecialchars($_SESSION['user_name'] ?? 'Admin'); ?>
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <?php echo $content; ?>
+            </main>
+            <footer class="page-footer">
+                <div class="footer-content">
+                    <div class="text-muted">Copyright &copy; Your Website 2024</div>
+                </div>
+            </footer>
+        </div>
     </div>
 
-    <script src="/public/js/admin_dashboard.js"></script>
-    <?php if (isset($use_ckeditor) && $use_ckeditor): ?>
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
-    <script>
-        ClassicEditor
-            .create( document.querySelector( '#description-editor' ), {
-                toolbar: [ 'heading', '|', 'bold', 'italic', 'link', 'bulletedList', 'numberedList', 'blockQuote', 'undo', 'redo' ]
-            })
-            .catch( error => { console.error( error ); });
-    </script>
-    <?php endif; ?>
+    <script src="../js/script-vanilla.js"></script>
 </body>
 </html>

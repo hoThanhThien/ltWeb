@@ -1,0 +1,235 @@
+/* ===================================================================
+   MAIN STYLESHEET
+   Description: Core styles for the Admin Dashboard.
+   Version: 1.1
+   =================================================================== */
+
+/* -------------------------------------------------------------------
+   1. ROOT & GENERAL STYLES
+   ------------------------------------------------------------------- */
+:root {
+    /* Color Palette */
+    --primary-color: #0d6efd;
+    --dark-color: #212529;
+    --dark-gray: #343a40;
+    --light-gray: #f8f9fa;
+    --text-muted: #6c757d;
+    --white-color: #fff;
+    --border-color: #dee2e6;
+
+    /* Layout Variables */
+    --sidebar-width: 225px;
+    --topnav-height: 56px;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    /* Typography */
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    font-size: 1rem;
+    color: var(--dark-color);
+    background-color: var(--light-gray);
+    
+    /* Layout */
+    margin: 0;
+    padding-top: var(--topnav-height);
+    padding-left: var(--sidebar-width);
+    
+    /* Transitions */
+    transition: padding-left 0.2s ease-in-out;
+}
+
+a {
+    color: var(--primary-color);
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: underline;
+}
+
+/* -------------------------------------------------------------------
+   2. CORE LAYOUT
+   ------------------------------------------------------------------- */
+#layoutSidenav_content {
+    width: 100%;
+    position: relative;
+    min-height: calc(100vh - var(--topnav-height));
+    display: flex;
+    flex-direction: column;
+}
+
+main {
+    padding: 1.5rem;
+    flex-grow: 1; /* Ensures main content takes up available space */
+}
+
+/* -------------------------------------------------------------------
+   3. TOP NAVIGATION BAR
+   ------------------------------------------------------------------- */
+.topnav {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 1rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--topnav-height);
+    background-color: var(--dark-gray);
+    color: var(--white-color);
+    z-index: 1031;
+}
+
+.navbar-brand {
+    font-size: 1.25rem;
+    font-weight: bold;
+    color: var(--white-color);
+}
+
+.navbar-brand:hover {
+    text-decoration: none;
+}
+
+.sidebar-toggle {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 1.25rem;
+    cursor: pointer;
+    padding: 0;
+}
+
+.sidebar-toggle:hover {
+    color: var(--white-color);
+}
+
+.icon-svg {
+    width: 1em;
+    height: 1em;
+    fill: currentColor;
+    vertical-align: middle;
+}
+
+/* -------------------------------------------------------------------
+   4. SIDE NAVIGATION
+   ------------------------------------------------------------------- */
+#layoutSidenav_nav {
+    position: fixed;
+    top: var(--topnav-height);
+    left: 0;
+    width: var(--sidebar-width);
+    height: calc(100vh - var(--topnav-height));
+    background-color: var(--dark-color);
+    z-index: 1030;
+    transition: transform 0.2s ease-in-out;
+}
+
+.sidenav {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.sidenav-menu {
+    flex-grow: 1;
+    overflow-y: auto;
+}
+
+.nav-items {
+    padding: 0.5rem 0;
+}
+
+.sidenav-menu-heading {
+    padding: 1.75rem 1rem 0.75rem;
+    font-size: 0.75rem;
+    font-weight: bold;
+    color: var(--text-muted);
+    text-transform: uppercase;
+}
+
+.nav-link {
+    display: flex;
+    align-items: center;
+    padding: 0.75rem 1rem;
+    position: relative;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    transition: color 0.15s ease, background-color 0.15s ease;
+}
+
+.nav-link:hover {
+    color: var(--white-color);
+    text-decoration: none;
+    background-color: rgba(255, 255, 255, 0.05);
+}
+
+/* Toggled state for sidebar */
+body.sidenav-toggled #layoutSidenav_nav {
+    transform: translateX(calc(-1 * var(--sidebar-width)));
+}
+
+body.sidenav-toggled #layoutSidenav_content {
+    padding-left: 0;
+}
+
+/* --- Collapsible Menu --- */
+.sidenav-collapse-arrow {
+    margin-left: auto;
+    transition: transform 0.2s ease;
+}
+
+.collapsible-toggle.collapsed .sidenav-collapse-arrow {
+    transform: rotate(-90deg);
+}
+
+.collapse-menu {
+    display: none;
+    padding-left: 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+}
+
+.collapse-menu.show {
+    display: block;
+}
+
+.collapse-menu .nav-link {
+    padding-left: 2.5rem; /* Indent nested links */
+    color: rgba(255, 255, 255, 0.5);
+    font-size: 0.9rem;
+}
+
+/* --- Sidenav Footer --- */
+.sidenav-footer {
+    padding: 0.75rem 1rem;
+    background-color: rgba(0, 0, 0, 0.2);
+    font-size: 0.875rem;
+    color: rgba(255, 255, 255, 0.5);
+    margin-top: auto; /* Pushes footer to the bottom */
+}
+
+.sidenav-footer .small {
+    display: block;
+    font-size: 0.9em;
+    margin-bottom: 0.25rem;
+}
+
+/* -------------------------------------------------------------------
+5. PAGE FOOTER
+   ------------------------------------------------------------------- */
+.page-footer {
+    padding: 1.5rem;
+    background-color: var(--white-color);
+    border-top: 1px solid var(--border-color);
+}
+
+.footer-content {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.875rem;
+    color: var(--text-muted);
+}

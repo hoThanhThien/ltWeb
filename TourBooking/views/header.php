@@ -20,7 +20,8 @@
         
             
         <div class="homeHeard" >
-    <h5><img src="https://cdn-icons-png.flaticon.com/128/5373/5373330.png" width="20px" alt="Logo"/>&nbsp;&nbsp;"Vùng trời quê hương nào cũng là bầu trời Tổ quốc"</h5>
+           
+   <marquee width="100%"> <h5><img src="https://cdn-icons-png.flaticon.com/128/5373/5373330.png" width="20px" alt="Logo"/>&nbsp;&nbsp;"Vùng trời quê hương nào cũng là bầu trời Tổ quốc"</h5></marquee>
         </div>
         <div class="index_header">
             <a href="?filter=random-tours">Hot</a>

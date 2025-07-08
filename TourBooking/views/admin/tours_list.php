@@ -1,13 +1,8 @@
-<?php
-// File: views/admin/tours_list.php
-$pageTitle = "Quản lý Tour";
-$current_page = "tours";
-?>
-
+<?php $pageTitle = "Quản lý Tour"; ?>
 <div class="content-card">
     <div class="card-header">
         <h3>Danh sách Tour du lịch</h3>
-        <a href="/admin/tours/add" class="btn btn-add" style="background-color: #00c853; color: white; text-decoration: none;">
+        <a href="/admin/tours/add" class="btn btn-add">
             <i class="fas fa-plus"></i> Thêm Tour mới
         </a>
     </div>
@@ -24,20 +19,28 @@ $current_page = "tours";
             </tr>
         </thead>
         <tbody>
-            <?php foreach ($tours as $tour): ?>
+            <?php if (!empty($tours)): ?>
+                <?php foreach ($tours as $tour): ?>
+                    <tr>
+                        <td><?= htmlspecialchars($tour['id']) ?></td>
+                        <td>
+                            <img src="/public/img/<?= htmlspecialchars($tour['image']) ?>" alt="Ảnh tour" class="tour-image-thumb">
+                        </td>
+                        <td><?= htmlspecialchars($tour['title']) ?></td>
+                        <td><?= htmlspecialchars($tour['location']) ?></td>
+                        <td><?= number_format($tour['price']) ?> VNĐ</td>
+                        <td><?= date('d/m/Y', strtotime($tour['start_date'])) ?></td>
+                        <td class="actions">
+                            <a href="/admin/tours/edit?id=<?= $tour['id'] ?>" class="btn btn-primary"><i class="fas fa-edit"></i> Sửa</a>
+                            <a href="/admin/tours/delete?id=<?= $tour['id'] ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tour này?');"><i class="fas fa-trash"></i> Xóa</a>
+                        </td>
+                    </tr>
+                <?php endforeach; ?>
+            <?php else: ?>
                 <tr>
-                    <td><?php echo htmlspecialchars($tour['id']); ?></td>
-                    <td><img src="/public/img/<?php echo htmlspecialchars($tour['image']); ?>" alt="Ảnh tour" style="width: 100px; border-radius: 5px;"></td>
-                    <td><?php echo htmlspecialchars($tour['title']); ?></td>
-                    <td><?php echo htmlspecialchars($tour['location']); ?></td>
-                    <td><?php echo number_format($tour['price']); ?> VNĐ</td>
-                    <td><?php echo date("d/m/Y", strtotime($tour['start_date'])); ?></td>
-                    <td class="actions">
-                        <a href="/admin/tours/edit?id=<?php echo $tour['id']; ?>" class="btn">Sửa</a>
-                        <a href="/admin/tours/delete?id=<?php echo $tour['id']; ?>" class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa tour này?');">Xóa</a>
-                    </td>
+                    <td colspan="7" style="text-align: center;">Chưa có tour nào.</td>
                 </tr>
-            <?php endforeach; ?>
+            <?php endif; ?>
         </tbody>
     </table>
 </div>

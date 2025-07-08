@@ -44,3 +44,7 @@ Test write from test_write.php OK at 2025-07-02 10:53:01
 [2025-07-04 05:48:14] Found Booking ID: 107
 [2025-07-04 05:48:14] DB Check for Booking 107: Found: Yes. Amount received: 2000
 [2025-07-04 05:48:14] SUCCESS: Booking ID 107 updated to confirmed.
+[2025-07-07 13:58:22] INSECURE Webhook Received: {"gateway":"MBBank","transactionDate":"2025-07-07 18:58:00","accountNumber":"0375227764","subAccount":null,"code":"DH113","content":"DH113 FT25188456369393   Ma giao dich  Trace778228 Trace 778228","transferType":"in","description":"BankAPINotify DH113 FT25188456369393   Ma giao dich  Trace778228 Trace 778228","transferAmount":2000,"referenceCode":"FT25188013265907","accumulated":0,"id":17039284}
+[2025-07-07 13:58:22] Found Booking ID: 113
+[2025-07-07 13:58:22] DB Check for Booking 113: Found: Yes. Amount received: 2000
+[2025-07-07 13:58:22] SUCCESS: Booking ID 113 updated to confirmed.
