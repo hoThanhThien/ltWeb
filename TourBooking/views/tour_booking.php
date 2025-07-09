@@ -9,7 +9,7 @@ require_once '../controllers/TourController.php';
 function getImageSrc($image) {
     return (preg_match('/^https?:\/\//i', $image))
         ? htmlspecialchars($image)
-        : '/Booking/ltWeb/TourBooking/public/img/' . htmlspecialchars($image);
+        : '../img/' . htmlspecialchars($image);
 }
 
 // Khối logic POST đã được xóa khỏi đây

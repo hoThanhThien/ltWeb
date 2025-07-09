@@ -32,43 +32,52 @@ function getImageSrc($image) {
     
        
 </div>
-</div> <div class="home-categories-wrapper">
+</div> 
+<form method="GET" action="" class="filter-form">
+<div class="home-categories-wrapper">
     <div class="home-category-item">
         <a href="#">
             <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Tour Biển Đảo">
-            <span>Tour Biển Đảo</span>
         </a>
+        <select name="filter">
+    <option value="">-- Tất cả tour --</option>
+    <option value="domestic" <?= ($_GET['filter'] ?? '') === 'domestic' ? 'selected' : '' ?>>Trong nước</option>
+    <option value="international" <?= ($_GET['filter'] ?? '') === 'international' ? 'selected' : '' ?>>Nước ngoài</option>
+    <option value="discount" <?= ($_GET['filter'] ?? '') === 'discount' ? 'selected' : '' ?>>Khuyến mãi</option>
+</select>
     </div>
     <div class="home-category-item">
         <a href="#">
-            <img src="https://cdn-icons-png.flaticon.com/512/2921/2921879.png" alt="Tour Leo Núi">
-            <span>Tour Leo Núi</span>
-        </a>
-    </div>
-    <div class="home-category-item">
-        <a href="#">
-            <img src="https://cdn-icons-png.flaticon.com/512/9370/9370068.png" alt="Tour Văn Hóa">
-            <span>Tour Văn Hóa</span>
-        </a>
-    </div>
-    <div class="home-category-item">
-        <a href="#">
+           
             <img src="https://cdn-icons-png.flaticon.com/512/2942/2942788.png" alt="Tour Ẩm Thực">
-            <span>Tour Ẩm Thực</span>
         </a>
+        
+    <input type="number" name="min_price" placeholder="Giá từ" value="<?= $_GET['min_price'] ?? '' ?>">
+    <input type="number" name="max_price" placeholder="Đến" value="<?= $_GET['max_price'] ?? '' ?>">
     </div>
     <div class="home-category-item">
         <a href="#">
-            <img src="https://cdn-icons-png.flaticon.com/512/817/817237.png" alt="Khuyến Mãi">
-            <span>Khuyến Mãi</span>
+             <img src="https://cdn-icons-png.flaticon.com/512/2921/2921879.png" alt="Tour Leo Núi">
+        </a>
+            <input type="date" name="start_date" value="<?= $_GET['start_date'] ?? '' ?>">
+    <input type="date" name="end_date" value="<?= $_GET['end_date'] ?? '' ?>">
+    </div>
+
+    <div class="home-category-item">
+        <a href="#">
+            <img src="https://cdn-icons-png.flaticon.com/512/817/817237.png" alt="lọc">
+            <button type="submit">Lọc</button>
         </a>
     </div>
 </div>
+
+</form>
+
     <div class="main-content">
-         <?php if (!empty($randomTours) && ($filter === 'random-tours' || !$filter)): ?>
+        <?php if (!empty($randomTours)): ?>
         
             <section class="random-tours">
-                
+             <h3>Tất Cả TOUR </h3>  
             
     <div id="tour-list">
         <?php foreach ($randomTours as $tour): ?>

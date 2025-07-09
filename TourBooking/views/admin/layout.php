@@ -7,6 +7,9 @@
     <title>Dashboard - Admin</title>
 
     <link href="../css/style-vanilla.css" rel="stylesheet" />
+    <link href="../css/admin_style.css" rel="stylesheet" />
+    <link href="../css/admin_dashboard.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="../img/logo.png">
     
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 </head>
@@ -54,6 +57,7 @@
         <div id="layoutSidenav_content">
             <main>
                 <?php echo $content; ?>
+                
             </main>
             <footer class="page-footer">
                 <div class="footer-content">
@@ -63,6 +67,12 @@
         </div>
     </div>
 
-    <script src="../js/script-vanilla.js"></script>
+    <script src="/js/script-vanilla.js"></script>
+    <?php if (isset($use_ckeditor) && $use_ckeditor): ?>
+    <script>
+        // Kích hoạt CKEditor trên textarea có id='description-editor'
+        CKEDITOR.replace('description-editor');
+    </script>
+    <?php endif; ?>
 </body>
 </html>

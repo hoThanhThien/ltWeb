@@ -13,7 +13,6 @@
                 <th>Tên</th>
                 <th>Email</th>
                 <th>Số điện thoại</th>
-                <th>Vai trò (ID)</th>
                 <th>Hành động</th>
             </tr>
         </thead>

@@ -1,8 +1,10 @@
 <?php
 // File: ltWeb/TourBooking/controllers/AdminController.php
 
+// Nạp các model cần thiết ở đầu file
 require_once __DIR__ . '/../models/Tour.php';
-require_once __DIR__ . '/../models/User.php'; // Thêm model User
+require_once __DIR__ . '/../models/User.php';
+require_once __DIR__ . '/../models/BookingModel.php';
 
 class AdminController {
 
@@ -10,7 +12,6 @@ class AdminController {
         if (session_status() === PHP_SESSION_NONE) {
             session_start();
         }
-        // Chuyển hướng nếu chưa đăng nhập hoặc không phải admin
         if (!isset($_SESSION['user_id']) || !isset($_SESSION['user_role_id']) || $_SESSION['user_role_id'] != 1) {
             header('Location: /login');
             exit();
@@ -25,9 +26,40 @@ class AdminController {
         require_once __DIR__ . '/../views/admin/layout.php';
     }
 
+    /**
+     * Hàm này sẽ hiển thị trang dashboard chính của admin.
+     * Nó sẽ lấy dữ liệu thống kê và truyền ra view.
+     */
     public function index() {
         $this->checkAdmin();
-        $this->renderView('dashboard');
+        
+        // --- BẮT ĐẦU LOGIC LẤY DỮ LIỆU ---
+        $bookingModel = new BookingModel();
+        $tourModel = new Tour();
+
+        // Lấy dữ liệu thống kê từ database
+        $totalProfit = $bookingModel->calculateTotalProfit();
+        $totalOrders = $bookingModel->countAllBookings();
+        $averagePrice = $bookingModel->getAveragePrice();
+        $totalTours = $tourModel->countTours(); // Giả sử hàm này đã có trong TourModel
+
+        // Tạo mảng $stats với dữ liệu động
+        $stats = [
+            'profit' => number_format($totalProfit, 0, ',', '.'),
+            'orders' => number_format($totalOrders, 0, ',', '.'),
+            'avg_price' => number_format($averagePrice, 0, ',', '.'),
+            'tours' => number_format($totalTours, 0, ',', '.')
+        ];
+        // Lấy danh sách tất cả đơn hàng
+    $recentBookings = $bookingModel->getAllBookingsWithDetails();
+  
+        // Truyền mảng $stats và các dữ liệu khác sang view
+        $this->renderView('dashboard', [
+            'pageTitle' => 'Dashboard', // Thêm tiêu đề trang
+            'stats' => $stats,
+            'recentBookings' => $recentBookings
+        ]);
+        // --- KẾT THÚC LOGIC LẤY DỮ LIỆU ---
     }
 
     public function listTours() {
@@ -40,7 +72,6 @@ class AdminController {
     public function addTour() {
         $this->checkAdmin();
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            // Xử lý logic thêm tour
             $image = '';
             if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
                 $target_dir = __DIR__ . "/../public/img/";
@@ -96,7 +127,6 @@ class AdminController {
         $this->renderView('edit_tour', ['tour' => $tour]);
     }
 
-
     public function deleteTour() {
         $this->checkAdmin();
         $id = $_GET['id'] ?? null;
@@ -114,15 +144,15 @@ class AdminController {
         $users = $userModel->getAllUsers();
         $this->renderView('user_management', ['users' => $users]);
     }
-
+    
+    
     public function deleteUser() {
         $this->checkAdmin();
         $id = $_GET['id'] ?? null;
         if ($id) {
-            // Ngăn việc xóa tài khoản admin
             if ($id == $_SESSION['user_id']) {
-                 echo "<script>alert('Bạn không thể xóa chính mình!'); window.location.href='/admin/users';</script>";
-                 exit();
+                echo "<script>alert('Bạn không thể xóa chính mình!'); window.location.href='/admin/users';</script>";
+                exit();
             }
 
             $userModel = new User();

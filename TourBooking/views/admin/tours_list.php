@@ -24,8 +24,24 @@
                     <tr>
                         <td><?= htmlspecialchars($tour['id']) ?></td>
                         <td>
-                            <img src="/public/img/<?= htmlspecialchars($tour['image']) ?>" alt="Ảnh tour" class="tour-image-thumb">
-                        </td>
+                       
+    <?php
+    // ko dùng hàm getImageSrc
+        // Lấy giá trị ảnh từ database
+        $image_source = $tour['image'];
+        $image_url = '';
+
+        // Kiểm tra xem giá trị có phải là một URL đầy đủ không
+        if (filter_var($image_source, FILTER_VALIDATE_URL)) {
+            // Nếu đúng là URL, dùng trực tiếp
+            $image_url = htmlspecialchars($image_source);
+        } else {
+            // Nếu chỉ là tên file, thêm đường dẫn /img/ vào trước
+            $image_url = "../img/" . htmlspecialchars($image_source);
+        }
+    ?>
+    <img src="<?= $image_url ?>" alt="Ảnh tour" class="tour-image-thumb">
+</td>
                         <td><?= htmlspecialchars($tour['title']) ?></td>
                         <td><?= htmlspecialchars($tour['location']) ?></td>
                         <td><?= number_format($tour['price']) ?> VNĐ</td>
@@ -42,5 +58,7 @@
                 </tr>
             <?php endif; ?>
         </tbody>
+       
     </table>
+    
 </div>

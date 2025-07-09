@@ -1,0 +1,113 @@
+/* ===================================================================
+   ADMIN FORM STYLES
+   =================================================================== */
+
+.admin-form {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Form chia 2 cột */
+    gap: 20px 30px; /* Khoảng cách giữa các dòng và cột */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid #e9ecef;
+}
+
+.admin-form .form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+/* Áp dụng cho các trường cần chiếm toàn bộ chiều rộng */
+.admin-form .full-width {
+    grid-column: 1 / -1;
+}
+
+.admin-form label {
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #495057;
+    font-size: 0.9rem;
+}
+
+.admin-form input[type="text"],
+.admin-form input[type="number"],
+.admin-form input[type="date"],
+.admin-form input[type="file"],
+.admin-form select,
+.admin-form textarea {
+    width: 100%;
+    padding: 12px 15px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    font-size: 1rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.admin-form input:focus,
+.admin-form select:focus,
+.admin-form textarea:focus {
+    outline: none;
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(13, 110, 253, 0.15);
+}
+
+.admin-form .image-preview img {
+    max-width: 250px;
+    height: auto;
+    margin-top: 10px;
+    border-radius: 5px;
+    border: 1px solid #dee2e6;
+}
+
+/* --- Form Actions (Buttons) --- */
+.admin-form .form-actions {
+    grid-column: 1 / -1;
+    display: flex;
+    justify-content: flex-start;
+    border-top: 1px solid #e9ecef;
+    padding-top: 20px;
+    margin-top: 10px;
+}
+
+.admin-form .btn,
+.admin-form button[type="submit"] {
+    padding: 12px 25px;
+    font-size: 1rem;
+    font-weight: 600;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    transition: background-color 0.2s, transform 0.1s;
+}
+
+.admin-form button[type="submit"] {
+    background-color: var(--primary-color);
+    color: white;
+}
+.admin-form button[type="submit"]:hover {
+    background-color: #0b5ed7;
+}
+
+.admin-form .btn-cancel {
+    background-color: #6c757d;
+    color: white;
+    margin-left: 15px;
+}
+.admin-form .btn-cancel:hover {
+    background-color: #5c636a;
+    text-decoration: none;
+}
+.status-badge {
+    padding: 5px 10px;
+    border-radius: 12px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: white;
+    text-transform: capitalize;
+}
+.status-confirmed { background-color: #28a745; } /* Xanh lá */
+.status-pending { background-color: #ffc107; } /* Vàng */
+.status-cancelled { background-color: #dc3545; } /* Đỏ */

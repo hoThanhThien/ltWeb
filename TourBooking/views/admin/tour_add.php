@@ -4,7 +4,9 @@ $pageTitle = "Thêm Tour mới";
 $current_page = "tours";
 $use_ckeditor = true; // Báo cho layout nạp thư viện CKEditor
 ?>
-
+<link href="/css/style-vanilla.css" rel="stylesheet" />
+   <link href="/css/admin_style.css" rel="stylesheet" />
+    <link href="/css/admin_dashboard.css" rel="stylesheet" />
 <div class="content-card">
     <div class="card-header">
         <h3>Thông tin Tour mới</h3>

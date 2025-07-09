@@ -67,5 +67,6 @@ if (isset($tour['discount_percent']) && $tour['discount_percent'] > 0) {
         include __DIR__ . '/../views/tour_booking.php';
     }
 
+    
 }
 ?>

@@ -3,7 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <title>Sửa Tour</title>
-    <link rel="stylesheet" href="/public/css/admin_style.css">
+     <link href="/css/style-vanilla.css" rel="stylesheet" />
+    <link href="/css/admin_style.css" rel="stylesheet" />
+    <link href="/css/admin_dashboard.css" rel="stylesheet" />
+    <link rel="icon" type="image/png" href="../img/logo.png">
+    <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
+    
     <style>
         /* Tùy chỉnh chiều cao cho CKEditor */
         .ck-editor__editable_inline {
