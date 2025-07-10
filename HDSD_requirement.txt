@@ -1,14 +1,16 @@
 chạy file csdl để tạo db với tên: tour_booking_db
-tiếp theo nếu test đầy đủ cả phẩn tự động thanh toán
-thì sd chạy file: start-ngrok.bat
+tiếp theo nếu test đầy đủ cả phâàn tự động thanh toán
+thì chạy file: start-ngrok.bat
 điều kiện phải phải cd tới thư mục TourBooking
 sau khi chạy terminal sẽ chạy giống như sau:
+
+
 ngrok
-�  Decouple policy and sensitive data with Secrets... now in developer preview: https://ngrok.com/r/secrets 
-Session Status                online 
+�  Decouple policy and sensitive data with Secrets... now in developer preview: https://ngrok.com/r/secrets
+Session Status                online
 Account                       hothanhthien119@gmail.com (Plan: Free)
-Version                       3.23.3   
-Web Interface                 http://127.0.0.1:4040  
-Forwarding                    https://awaited-hog-causal.ngrok-free.app -> http://localhost:80 
-Connections                   ttl     opn     rt1     rt5     p50     p90   
-                               0       0       0.00    0.00    0.00    0.00 
+Version                       3.23.3
+Web Interface                 http://127.0.0.1:4040
+Forwarding                    https://awaited-hog-causal.ngrok-free.app -> http://localhost:80
+Connections                   ttl     opn     rt1     rt5     p50     p90
+                               0       0       0.00    0.00    0.00    0.00
