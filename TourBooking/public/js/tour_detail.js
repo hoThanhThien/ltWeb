@@ -10,7 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Tab functionality
+  
   const tabs = document.querySelectorAll(".tab-list li");
   const contents = document.querySelectorAll(".tab-content");
 
