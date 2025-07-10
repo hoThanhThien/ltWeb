@@ -8,16 +8,34 @@ require_once __DIR__ . '/../controllers/TourController.php';
 require_once __DIR__ . '/../controllers/PaymentController.php';
 require_once __DIR__ . '/../controllers/AdminController.php'; // Controller trung tâm cho admin
 require_once __DIR__ . '/../controllers/BookingController.php';
-
 // Lấy đường dẫn yêu cầu
 $request_path = strtok($_SERVER['REQUEST_URI'], '?');
-// Nếu người dùng đã đăng nhập, là admin và không đang ở trang admin hoặc logout
-if (isset($_SESSION['user_role_id']) && $_SESSION['user_role_id'] == '1')  {
-    // Kiểm tra để tránh vòng lặp chuyển hướng vô hạn
+// Nếu người dùng là admin và đang không ở trang admin, chuyển hướng họ đi
+if (isset($_SESSION['user_role_id']) && $_SESSION['user_role_id'] == 1) {
+    $request_path = strtok($_SERVER['REQUEST_URI'], '?');
+    
     if (!str_starts_with($request_path, '/admin') && $request_path !== '/logout') {
-        header('Location: /admin/dashboard'); // Chuyển hướng đến trang dashboard của admin
-        exit(); // Dừng thực thi mã để đảm bảo chuyển hướng hoạt động
+        echo "<script>window.parent.location.href = '/admin/dashboard';</script>";
+        exit();
     }
+}
+// Kiểm tra nếu người dùng đã đăng nhập
+if (isset($_SESSION['user_id'])) {
+    // Nếu  vào trang login hoặc register -> Chuyển hướng họ đi
+    if ($request_path === '/login' || $request_path === '/register') {
+        
+        // Nếu là admin, về trang admin
+        if ($_SESSION['user_role_id'] == 1) {
+            echo "<script>window.parent.location.href = '/admin/dashboard';</script>";
+            exit();
+        }
+        // Nếu là user thường, về trang chủ
+        else {
+            echo "<script>window.parent.location.reload();</script>";
+            exit();
+        }
+    }
+    
 }
 // Ghi log để gỡ lỗi
 file_put_contents(

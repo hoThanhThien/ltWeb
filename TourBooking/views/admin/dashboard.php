@@ -3,25 +3,22 @@
     <div class="card card-profit">
         <h4>Total Profit</h4>
         <p><?= htmlspecialchars($stats['profit'] ?? 0) ?> VND</p>
-        <span class="stat-change">+11%</span>
         <i class="fas fa-dollar-sign card-icon"></i>
     </div>
     <div class="card card-orders">
         <h4>Total Orders</h4>
         <p><?= htmlspecialchars($stats['orders'] ?? 0) ?></p>
-        <span class="stat-change">+12%</span>
         <i class="fas fa-shopping-cart card-icon"></i>
     </div>
     <div class="card card-price">
         <h4>Average Price</h4>
         <p><?= htmlspecialchars($stats['avg_price'] ?? 0) ?> VND</p>
-        <span class="stat-change">+52%</span>
+
         <i class="fas fa-tag card-icon"></i>
     </div>
     <div class="card card-sold">
         <h4>Total Tours</h4>
         <p><?= htmlspecialchars($stats['tours'] ?? 0) ?></p>
-        <span class="stat-change">+52%</span>
         <i class="fas fa-box card-icon"></i>
     </div>
 </div>
@@ -61,7 +58,7 @@
                                     // Xác định trạng thái mới khi click
                                     $newStatus = ($currentStatus == 'pending') ? 'confirmed' : 'pending';
                                     
-                                    // Lấy đúng class CSS cho badge
+                                    // Lấy đúng class CSS 
                                     $badgeClass = ($currentStatus == 'pending') ? 'status-pending' : 'status-confirmed';
                                 ?>
                                 <a href="/admin/bookings/update_status?id=<?= $booking['booking_id'] ?>&status=<?= $newStatus ?>" class="status-badge <?= $badgeClass ?>">

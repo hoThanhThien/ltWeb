@@ -1,0 +1,8 @@
+quyền admin
+email hothanhthien119@gmail.com
+pas:123456
+
+-----------------------------
+role user
+user: test@gmail.com
+pass:1234567

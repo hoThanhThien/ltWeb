@@ -51,10 +51,12 @@ $use_ckeditor = true; // Báo cho layout nạp thư viện CKEditor
                 <option value="nuocngoai">Nước ngoài</option>
             </select>
         </div>
-        <div class="form-group">
-            <label>Ảnh đại diện:</label>
-            <input type="file" name="image" required>
-        </div>
+          <div class="form-group">
+                <label>Chọn ảnh :</label>
+                <input type="file" name="image">
+                 <label>Hoặc dán link ảnh vào đây:</label>
+                <input type="text" name="image_url" placeholder="https://example.com/image.jpg">
+            </div>
         <div class="form-group full-width">
             <label>Mô tả chi tiết:</label>
             <textarea name="description" id="description-editor"></textarea>

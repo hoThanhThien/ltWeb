@@ -97,6 +97,51 @@ public function getUserById($id) {
             return []; // Nếu lỗi thì trả về mảng rỗng
         }
     }
+        /**
+     * Lấy danh sách người dùng đã được lọc và phân trang 
+     */
+    public function getFilteredUsers($filters, $limit, $offset) {
+        $sql = "SELECT * FROM users WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['keyword'])) {
+            $sql .= " AND (name LIKE :keyword OR email LIKE :keyword)";
+            $params[':keyword'] = "%" . $filters['keyword'] . "%";
+        }
+
+        $sql .= " ORDER BY id DESC LIMIT :limit OFFSET :offset";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        // Gắn các tham số đã có
+        foreach ($params as $key => &$val) {
+            $stmt->bindParam($key, $val);
+        }
+
+        // Gắn tham số cho limit và offset (phải là kiểu INT)
+        $stmt->bindParam(':limit', $limit, PDO::PARAM_INT);
+        $stmt->bindParam(':offset', $offset, PDO::PARAM_INT);
+        
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Đếm tổng số người dùng 
+     */
+    public function countFilteredUsers($filters) {
+        $sql = "SELECT COUNT(*) FROM users WHERE 1=1";
+        $params = [];
+
+        if (!empty($filters['keyword'])) {
+            $sql .= " AND (name LIKE :keyword OR email LIKE :keyword)";
+            $params[':keyword'] = "%" . $filters['keyword'] . "%";
+        }
+        
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute($params);
+        return (int)$stmt->fetchColumn();
+    }
 
     /**
      * Cập nhật thông tin người dùng.

@@ -17,7 +17,7 @@ class BookingController {
 
         // 1. Logic phân trang
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 5; // Hiển thị 5 đơn hàng mỗi trang
+        $limit = 8; // Hiển thị 5 đơn hàng mỗi trang
         $offset = ($page - 1) * $limit;
 
         // 2. Lấy đơn hàng đã phân trang và tổng số đơn hàng

@@ -28,10 +28,7 @@ $current_page = 'users';
                 <label for="phone">Số điện thoại:</label>
                 <input type="text" id="phone" name="phone" value="<?= htmlspecialchars($user['phone'] ?? '') ?>">
             </div>
-            <div class="form-group">
-                <label for="password">Mật khẩu mới (để trống nếu không đổi):</label>
-                <input type="password" id="password" name="password">
-            </div>
+       
 
             <div class="form-actions">
                 <button type="submit">Lưu Thay Đổi</button>

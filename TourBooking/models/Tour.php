@@ -72,19 +72,37 @@ public function getToursByCategory($categoryId) {
     }
 
     public function getTourById($id) {
-        $stmt = $this->conn->prepare("SELECT * FROM tours WHERE id = ?");
-        $stmt->execute([$id]);
-        return $stmt->fetch();
-        
-    }
+    $stmt = $this->conn->prepare("SELECT * FROM tours WHERE id = ?");
+    $stmt->execute([$id]);
+    // Trả về một mảng hoặc false nếu không tìm thấy
+    return $stmt->fetch(PDO::FETCH_ASSOC);
+}
 
-    public function addTour($title, $location, $description, $price, $duration_days, $start_date, $end_date, $available_slots, $stars, $image, $loai_tour) {
-        $stmt =$this->conn->prepare("INSERT INTO tours (title, location, description, price, duration_days, start_date, end_date, available_slots, stars, image, loai_tour) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)");
-        $stmt->execute([$title, $location, $description, $price, $duration_days, $start_date, $end_date, $available_slots, $stars, $image, $loai_tour]);
-    }
-    public function updateTour($id, $title, $location, $description, $price, $duration_days, $start_date, $end_date, $available_slots, $stars, $image, $loai_tour) {
-    $stmt = $this->conn->prepare("UPDATE tours SET title=?, location=?, description=?, price=?, duration_days=?, start_date=?, end_date=?, available_slots=?, stars=?, image=?, loai_tour=? WHERE id=?");
-    $stmt->execute([$title, $location, $description, $price, $duration_days, $start_date, $end_date, $available_slots, $stars, $image, $loai_tour, $id]);
+//  hàm addTour để nhận một mảng
+public function addTour(array $data) {
+    $sql = "INSERT INTO tours (title, location, description, price, duration_days, start_date, end_date, available_slots, stars, image, loai_tour) 
+            VALUES (:title, :location, :description, :price, :duration_days, :start_date, :end_date, :available_slots, :stars, :image, :loai_tour)";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute($data);
+}
+
+//  hàm updateTour để nhận một mảng
+public function updateTour(array $data) {
+    $sql = "UPDATE tours SET 
+                title = :title, 
+                location = :location, 
+                description = :description, 
+                price = :price, 
+                duration_days = :duration_days, 
+                start_date = :start_date, 
+                end_date = :end_date, 
+                available_slots = :available_slots, 
+                stars = :stars, 
+                image = :image, 
+                loai_tour = :loai_tour 
+            WHERE id = :id";
+    $stmt = $this->conn->prepare($sql);
+    return $stmt->execute($data);
 }
 
 public function deleteTour($id) {

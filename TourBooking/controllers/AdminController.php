@@ -4,7 +4,7 @@
 require_once __DIR__ . '/../models/Tour.php';
 require_once __DIR__ . '/../models/User.php';
 require_once __DIR__ . '/../models/BookingModel.php';
-
+require_once __DIR__ . '/../models/AuthTokenModel.php';
 class AdminController {
 
     private function checkAdmin() {
@@ -42,7 +42,7 @@ class AdminController {
         
         // 2.1. Xác định trang hiện tại và giới hạn mỗi trang
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 10; // 10 đơn hàng mỗi trang
+        $limit = 6; // 10 đơn hàng mỗi trang
         $offset = ($page - 1) * $limit;
 
         // 2.2. Lấy đơn hàng đã phân trang từ Model
@@ -69,7 +69,7 @@ class AdminController {
         
         // 1. Lấy trang hiện tại từ URL, mặc định là trang 1
         $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 10; // Số lượng tour hiển thị trên mỗi trang
+        $limit = 6; // Số lượng tour hiển thị trên mỗi trang
         $offset = ($page - 1) * $limit;
 
         // 2. Lấy đúng số lượng tour cho trang hiện tại
@@ -111,59 +111,118 @@ class AdminController {
         ]);
     }
     public function addTour() {
-        $this->checkAdmin();
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $image = '';
-            if (isset($_FILES['image']) && $_FILES['image']['error'] == 0) {
-                $target_dir = __DIR__ . "/../public/img/";
-                $image = basename($_FILES["image"]["name"]);
-                $target_file = $target_dir . $image;
-                move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
-            }
+    $this->checkAdmin();
+    
+    // Xử lý khi người dùng nhấn nút "Thêm mới"
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        // --- LOGIC XỬ LÝ ẢNH (Ưu tiên: File > URL) ---
+        $image_value = ''; // Mặc định là chuỗi rỗng
 
-            $tourModel = new Tour();
-            $tourModel->addTour(
-                $_POST['title'], $_POST['location'], $_POST['description'], $_POST['price'],
-                $_POST['duration_days'], $_POST['start_date'], $_POST['end_date'],
-                $_POST['available_slots'], $_POST['stars'], $image, $_POST['loai_tour']
-            );
+        // 1. Ưu tiên file tải lên
+        if (isset($_FILES['new_image_file']) && $_FILES['new_image_file']['error'] == 0 && !empty($_FILES['new_image_file']['name'])) {
+            $target_dir = __DIR__ . "/../public/img/";
+            // Tạo tên file an toàn và duy nhất
+            $file_extension = pathinfo($_FILES["new_image_file"]["name"], PATHINFO_EXTENSION);
+            $file_name = "tour_" . time() . "." . $file_extension;
+            $target_file = $target_dir . $file_name;
+
+            if (move_uploaded_file($_FILES["new_image_file"]["tmp_name"], $target_file)) {
+                $image_value = $file_name; // Nếu tải lên thành công, dùng tên file mới
+            }
+        // 2. Nếu không có file, kiểm tra có dán link URL không
+        } elseif (!empty($_POST['image_url'])) {
+            $image_value = $_POST['image_url']; // Dùng link URL
+        }
+        // --- KẾT THÚC LOGIC ẢNH ---
+
+        // Gói tất cả dữ liệu vào MỘT MẢNG DUY NHẤT
+        $data = [
+            'title' => $_POST['title'],
+            'location' => $_POST['location'],
+            'description' => $_POST['description'],
+            'price' => $_POST['price'],
+            'duration_days' => $_POST['duration_days'],
+            'start_date' => $_POST['start_date'],
+            'end_date' => $_POST['end_date'],
+            'available_slots' => $_POST['available_slots'],
+            'stars' => $_POST['stars'],
+            'loai_tour' => $_POST['loai_tour'],
+            'image' => $image_value // Sử dụng giá trị ảnh đã được xử lý
+        ];
+        
+        $tourModel = new Tour();
+        // Gọi hàm addTour trong Model với chỉ một mảng dữ liệu
+        if ($tourModel->addTour($data)) {
             header('Location: /admin/tours');
             exit();
+        } else {
+            // Xử lý lỗi nếu cần
+            echo "Thêm tour mới thất bại!";
         }
-        $this->renderView('tour_add', [
-            'pageTitle' => 'Thêm Tour Mới',
-            'current_page' => 'tours',
-            'use_ckeditor' => true
-        ]);
     }
+
+    // Hiển thị form thêm mới
+    $this->renderView('tour_add', [
+        'pageTitle' => 'Thêm Tour Mới',
+        'current_page' => 'tours',
+        'use_ckeditor' => true
+    ]);
+}
     // Sửa tour
     public function editTour() {
-        $this->checkAdmin();
-        $tourModel = new Tour();
-        $id = $_GET['id'] ?? null;
-        if (!$id) {
-            header('Location: /admin/tours');
-            exit();
-        }
+    $this->checkAdmin();
+    $tourModel = new Tour();
+    $id = $_GET['id'] ?? $_POST['id'] ?? null; // Lấy id từ GET hoặc POST
 
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $image = $_POST['current_image'];
-            if (isset($_FILES['image']) && !empty($_FILES['image']['name']) && $_FILES['image']['error'] == 0) {
-                $target_dir = __DIR__ . "/../public/img/";
-                $image = basename($_FILES["image"]["name"]);
-                $target_file = $target_dir . $image;
-                move_uploaded_file($_FILES["image"]["tmp_name"], $target_file);
+    if (!$id) {
+        header('Location: /admin/tours');
+        exit();
+    }
+
+    // Xử lý khi người dùng nhấn nút "Cập nhật" (phương thức POST)
+    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+        
+        // --- LOGIC XỬ LÝ ẢNH
+        $image_value = $_POST['current_image']; 
+        if (isset($_FILES['new_image_file']) && $_FILES['new_image_file']['error'] == 0 && !empty($_FILES['new_image_file']['name'])) {
+            $target_dir = __DIR__ . "/../public/img/";
+            $file_name = time() . '_' . basename($_FILES["new_image_file"]["name"]);
+            $target_file = $target_dir . $file_name;
+            if (move_uploaded_file($_FILES["new_image_file"]["tmp_name"], $target_file)) {
+                $image_value = $file_name;
             }
-
-            $tourModel->updateTour(
-                $id, $_POST['title'], $_POST['location'], $_POST['description'], $_POST['price'],
-                $_POST['duration_days'], $_POST['start_date'], $_POST['end_date'],
-                $_POST['available_slots'], $_POST['stars'], $image, $_POST['loai_tour']
-            );
-            header('Location: /admin/tours');
-            exit();
+        } elseif (!empty($_POST['image_url']) && $_POST['image_url'] != $_POST['current_image']) {
+            $image_value = $_POST['image_url'];
         }
 
+    
+        // Gói tất cả dữ liệu từ form vào MỘT MẢNG DUY NHẤT
+        $data = [
+            'id' => $id,
+            'title' => $_POST['title'],
+            'location' => $_POST['location'],
+            'description' => $_POST['description'],
+            'price' => $_POST['price'],
+            'duration_days' => $_POST['duration_days'],
+            'start_date' => $_POST['start_date'],
+            'end_date' => $_POST['end_date'],
+            'available_slots' => $_POST['available_slots'],
+            'stars' => $_POST['stars'],
+            'loai_tour' => $_POST['loai_tour'],
+            'image' => $image_value // Sử dụng giá trị ảnh đã được xử lý
+        ];
+        
+        // Gọi hàm updateTour với CHỈ MỘT MẢNG DỮ LIỆU
+        if ($tourModel->updateTour($data)) {
+            header('Location: /admin/tours');
+            exit();
+        } else {
+            echo "Cập nhật tour thất bại!";
+        }
+
+    // Hiển thị form edit (phương thức GET)
+    } else {
         $tour = $tourModel->getTourById($id);
         if (!$tour) {
             header('Location: /admin/tours');
@@ -176,7 +235,7 @@ class AdminController {
             'use_ckeditor' => true
         ]);
     }
-    // sửa thông tin
+}
     public function editUser() {
         $this->checkAdmin();
         $userModel = new User();
@@ -230,18 +289,31 @@ class AdminController {
         $this->checkAdmin();
         $userModel = new User();
         
-        $page = isset($_GET['page']) && is_numeric($_GET['page']) ? (int)$_GET['page'] : 1;
-        $limit = 5; // Số lượng user trên mỗi trang
+        // 1. Lấy tham số lọc từ URL (nếu có)
+        $filters = [
+            'keyword' => $_GET['keyword'] ?? ''
+        ];
+
+        // 2. Logic phân trang
+        $page = max(1, (int)($_GET['page'] ?? 1));
+        $limit = 6; // Hoặc số lượng user bạn muốn hiển thị trên mỗi trang
         $offset = ($page - 1) * $limit;
 
-        $users = $userModel->getAllUsers($limit, $offset);
-        $totalUsers = $userModel->getUsersCount();
-        $totalPages = ceil($totalUsers / $limit);
+        // 3. GỌI ĐÚNG PHƯƠNG THỨC LẤY USER  VÀ PHÂN TRANG
+        // DÒNG NÀY LÀ QUAN TRỌNG NHẤT
+        $users = $userModel->getFilteredUsers($filters, $limit, $offset);
 
+        
+        // 4. Đếm tổng số user đã lọc để tính toán phân trang
+        $totalUsers = $userModel->countFilteredUsers($filters);
+        $totalPages = max(1, ceil($totalUsers / $limit));
+
+        // 5. Render view và truyền dữ liệu
         $this->renderView('user_management', [
             'users' => $users,
             'page' => $page,
             'totalPages' => $totalPages,
+            'filters' => $filters,
             'pageTitle' => 'Quản lý User',
             'current_page' => 'users'
         ]);

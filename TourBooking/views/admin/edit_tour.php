@@ -63,23 +63,32 @@
                 <label>Chọn ảnh mới (để thay đổi):</label>
                 <input type="file" name="image">
                 <input type="hidden" name="current_image" value="<?php echo htmlspecialchars($tour['image']); ?>">
+                 <label>Hoặc dán link ảnh mới vào đây:</label>
+                <input type="text" name="image_url" value="<?php echo htmlspecialchars($tour['image']); ?>">
+                <input type="hidden" name="current_image" value="<?php echo htmlspecialchars($tour['image']); ?>">
             </div>
             <div class="form-group full-width">
                 <label>Mô tả chi tiết:</label>
                 <textarea name="description" id="description-editor"><?php echo htmlspecialchars($tour['description']); ?></textarea>
             </div>
             <div class="form-group full-width image-preview">
-                <label>Ảnh hiện tại:</label>
-                <img src="/public/img/<?php echo htmlspecialchars($tour['image']); ?>" alt="Ảnh tour hiện tại">
+                 <label>Ảnh hiện tại:</label>
+                <?php
+                    $image_path = htmlspecialchars($tour['image']);
+                    if (filter_var($image_path, FILTER_VALIDATE_URL)) {
+                        $display_image = $image_path;
+                    } else {
+                        $display_image = '/public/img/' . $image_path;
+                    }
+                ?>
+                <img src="<?php echo $display_image; ?>" alt="Ảnh tour hiện tại" style="max-width: 300px;">
             </div>
-            <div class="form-group full-width">
+            <div class="form-actions">
                 <button type="submit">Cập nhật Tour</button>
                  <a href="/admin/tours" class="btn" style="background-color: #7f8c8d; margin-left: 10px;">Hủy</a>
             </div>
         </form>
     </div>
-
-    <script src="https://cdn.ckeditor.com/ckeditor5/41.4.2/classic/ckeditor.js"></script>
 
     <script>
         ClassicEditor
