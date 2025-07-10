@@ -1,6 +1,4 @@
-<?php
-// Xóa toàn bộ mảng $stats giả ở đây, vì controller đã cung cấp rồi.
-?>
+<link href="../css/pagination.css" rel="stylesheet" />
 <div class="stats-cards">
     <div class="card card-profit">
         <h4>Total Profit</h4>
@@ -58,14 +56,24 @@
                             <td><?= date('d/m/Y', strtotime($booking['created_at'])) ?></td>
                             <td><?= number_format($booking['total_price'], 0, ',', '.') ?> VNĐ</td>
                             <td>
-                                <span class="status-badge status-<?= htmlspecialchars($booking['status']) ?>">
-                                    <?= ucfirst(htmlspecialchars($booking['status'])) ?>
-                                </span>
-                            </td>
+                                <?php
+                                    $currentStatus = strtolower($booking['status']);
+                                    // Xác định trạng thái mới khi click
+                                    $newStatus = ($currentStatus == 'pending') ? 'confirmed' : 'pending';
+                                    
+                                    // Lấy đúng class CSS cho badge
+                                    $badgeClass = ($currentStatus == 'pending') ? 'status-pending' : 'status-confirmed';
+                                ?>
+                                <a href="/admin/bookings/update_status?id=<?= $booking['booking_id'] ?>&status=<?= $newStatus ?>" class="status-badge <?= $badgeClass ?>">
+                                    <?= ucfirst($currentStatus) ?>
+                                </a>
+                                </td>
                         </tr>
                     <?php endforeach; ?>
                 <?php endif; ?>
             </tbody>
         </table>
+        
+        <?php include 'pagination.php'; ?>
     </div>
 </div>

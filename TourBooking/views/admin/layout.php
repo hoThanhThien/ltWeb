@@ -9,12 +9,15 @@
     <link href="../css/style-vanilla.css" rel="stylesheet" />
     <link href="../css/admin_style.css" rel="stylesheet" />
     <link href="../css/admin_dashboard.css" rel="stylesheet" />
+    <link href="../css/pagination.css" rel="stylesheet" />
     <link rel="icon" type="image/png" href="../img/logo.png">
     
     <script src="https://cdn.ckeditor.com/4.16.0/standard/ckeditor.js"></script>
 </head>
-<body> <nav class="topnav">
+<body>
+    <nav class="topnav">
         <a class="navbar-brand" href="/admin">Admin Panel</a>
+       
         <button class="sidebar-toggle" id="sidebarToggle">
             <svg class="icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512"><path d="M0 96C0 78.3 14.3 64 32 64H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32C14.3 128 0 113.7 0 96zM0 256c0-17.7 14.3-32 32-32H416c17.7 0 32 14.3 32 32s-14.3 32-32 32H32c-17.7 0-32-14.3-32-32zM448 416c0 17.7-14.3 32-32 32H32c-17.7 0-32-14.3-32-32s14.3-32 32-32H416c17.7 0 32 14.3 32 32z"/></svg>
         </button>
@@ -35,8 +38,7 @@
                             <div class="sidenav-collapse-arrow">▼</div>
                         </a>
                         <div class="collapse-menu" id="collapseTour">
-                            <a class="nav-link" href="../admin/tours">Danh sách Tour</a>
-                            <a class="nav-link" href="../admin/add-tour">Thêm Tour</a>
+                            <a class="nav-link" href="/admin/tours">Danh sách Tour</a>
                         </div>
 
                         <a class="nav-link collapsible-toggle" href="#" data-target="#collapseUser">
@@ -44,20 +46,20 @@
                             <div class="sidenav-collapse-arrow">▼</div>
                         </a>
                         <div class="collapse-menu" id="collapseUser">
-                            <a class="nav-link" href="../admin/users">Danh sách User</a>
+                            <a class="nav-link" href="/admin/users">Danh sách User</a>
                         </div>
                     </div>
                 </div>
                 <div class="sidenav-footer">
                     <div class="small">Logged in as:</div>
                     <?= htmlspecialchars($_SESSION['user_name'] ?? 'Admin'); ?>
+                     <a href="/logout">Đăng xuất</a>
                 </div>
             </nav>
         </div>
         <div id="layoutSidenav_content">
             <main>
                 <?php echo $content; ?>
-                
             </main>
             <footer class="page-footer">
                 <div class="footer-content">

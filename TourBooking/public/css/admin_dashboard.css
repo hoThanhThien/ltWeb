@@ -196,8 +196,10 @@ body {
 .stats-cards {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-    gap: 25px;
+    gap: 100px;
     margin-bottom: 25px;
+    padding: 0 25px;
+    
 }
 
 .card {
@@ -208,6 +210,7 @@ body {
     overflow: hidden;
     box-shadow: 0 5px 15px var(--shadow-color);
     transition: transform 0.2s;
+    
 }
 .card:hover {
     transform: translateY(-5px);

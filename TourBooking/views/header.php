@@ -25,17 +25,20 @@
         </div>
         <div class="index_header">
             <a href="?filter=random-tours">Hot</a>
-            <a href="">Tour</a>
-            <a href="">Khuyến mãi</a>
-            <a href="">Liên hệ</a>
+            
+            <a href="/?filter=discount">Khuyến mãi</a>
+            <a href="mailto:hothanhthien119@gmail.com">Liên hệ</a>
             
    
         <?php if (isset($_SESSION['user_id'])): ?>
-            <img src="https://travel.com.vn/_next/static/media/user.6313d4b4.png"/><span>Chào, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
-            <a href="/logout">Đăng xuất</a>
-        <?php else: ?>
-            <a href="#" id="open-auth-modal">Đăng nhập / Đăng ký</a>
-        <?php endif; ?>
+    <a href="/my-bookings" class="user-profile-link">
+        <img src="https://travel.com.vn/_next/static/media/user.6313d4b4.png"/>
+        <span>Chào, <?php echo htmlspecialchars($_SESSION['user_name']); ?></span>
+    </a>
+    <a href="/logout">Đăng xuất</a>
+<?php else: ?>
+    <a href="#" id="open-auth-modal">Đăng nhập / Đăng ký</a>
+<?php endif; ?>
 
             
         </div>
@@ -46,6 +49,6 @@
     <button id="close-iframe-modal">&times;</button>
     <iframe id="auth-iframe" src="" name="auth-iframe" frameborder="0"></iframe>
 </div>
-
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
 </body>
 </html>

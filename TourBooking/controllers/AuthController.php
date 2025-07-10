@@ -1,9 +1,12 @@
 <?php
-// File: controllers/AuthController.php
+
 
 require_once __DIR__ . '/../models/User.php';
 
+require_once __DIR__ . '/../models/AuthTokenModel.php';
 class AuthController {
+    private $authTokenModel;
+
 
     public function showLoginForm() {
         require_once __DIR__ . '/../views/login_view.php';
@@ -11,13 +14,25 @@ class AuthController {
 
 
 
-    public function logout() {
+    // Trong file: /controllers/AuthController.php
+
+public function logout() {
+    // Bắt đầu session để có thể truy cập các biến session
+    if (session_status() == PHP_SESSION_NONE) {
         session_start();
-        $_SESSION = [];
-        session_destroy();
-        header('Location: /home');
-        exit();
     }
+
+    // 1. Xóa tất cả các biến session
+    $_SESSION = array();
+
+    // 2. Hủy session
+    session_destroy();
+
+    // 3. Chuyển hướng người dùng về trang chủ
+    header('Location: /home');
+    exit(); // Dừng thực thi ngay lập tức
+}
+
 public function showRegisterForm() {
     require_once __DIR__ . '/../views/register_view.php';
 }
@@ -58,6 +73,10 @@ public function handleLogin() {
             $_SESSION['user_id'] = $user['id'];
             $_SESSION['user_name'] = $user['name'];
             $_SESSION['user_role_id'] = $user['role_id'];
+             //  Xử lý "Ghi nhớ đăng nhập"
+            if (isset($_POST['remember_me'])) {
+            $this->createRememberMeToken($user['id']);
+        }
 
             // --- PHẦN THAY ĐỔI QUAN TRỌNG BẮT ĐẦU TỪ ĐÂY ---
 
@@ -80,6 +99,39 @@ public function handleLogin() {
     
     // Nếu có bất kỳ lỗi nào, hiển thị lại form đăng nhập với thông báo lỗi
     require_once __DIR__ . '/../views/login_view.php';
+}
+
+// Tạo token "Ghi nhớ đăng nhập" và lưu vào cookie
+private function createRememberMeToken($userId) {
+    // 1. Tạo selector và validator ngẫu nhiên, an toàn
+    $selector = bin2hex(random_bytes(16));
+    $validator = bin2hex(random_bytes(32));
+
+    // 2. Thời gian hết hạn 
+    $expires = new DateTime('+30 days');
+    
+    // 3. Lưu token vào cookie
+    // Cookie chứa selector và validator CHƯA HASH
+    setcookie(
+        'remember_me',
+        $selector . ':' . $validator,
+        $expires->getTimestamp(),
+        '/',
+        '',
+        false, // true nếu dùng HTTPS
+        true   // httpOnly, ngăn JavaScript truy cập
+    );
+
+    // 4. Lưu token vào database
+    // Validator phải được HASH trước khi lưu
+    $hashedValidator = hash('sha256', $validator);
+
+    
+    // Xóa tất cả các token "ghi nhớ" cũ của người dùng này.
+    $this->authTokenModel->deleteTokensForUser($userId);
+
+    // Chèn token mới vào database.
+    $this->authTokenModel->insertToken($selector, $hashedValidator, $userId, $expires->format('Y-m-d H:i:s'));
 }
 
     public function handleRegistration() {

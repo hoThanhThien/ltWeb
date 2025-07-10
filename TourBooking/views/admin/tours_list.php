@@ -60,5 +60,5 @@
         </tbody>
        
     </table>
-    
+    <?php include 'pagination.php'; ?>
 </div>

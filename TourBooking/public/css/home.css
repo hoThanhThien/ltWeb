@@ -16,37 +16,60 @@ h3 {
 
 #tour-list {
     display: grid;
+    /* Sử dụng grid để tạo layout cột */
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-    gap: 25px;
-    padding: 0 20px 50px;
-    margin-top: 20px;
+    gap: 25px; /* Khoảng cách giữa các thẻ tour */
+    padding: 20px;
 }
 
 .tour-item {
     background: #fff;
-    border-radius: 15px;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.08);
     overflow: hidden;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.15);
-    display: flex; /* Quan trọng: Bật Flexbox */
-    flex-direction: column; /* Quan trọng: Sắp xếp theo chiều dọc */
+    
+    /* === Bắt đầu phần quan trọng === */
+    display: flex; /* Bật Flexbox */
+    flex-direction: column; /* Sắp xếp các phần tử con theo chiều dọc */
+    /* =============================== */
 }
 
 .tour-item img {
     width: 100%;
-    height: 200px;
-    object-fit: cover;
+    height: 200px; /* Cố định chiều cao ảnh */
+    object-fit: cover; /* Đảm bảo ảnh không bị méo */
 }
 
-/* Khối nội dung này sẽ tự động co giãn */
+/* Khối nội dung chính */
 .tour-item .tour-content {
     padding: 15px;
-    flex-grow: 1; /* Quan trọng nhất: Đẩy nút xuống dưới */
+    /* === Quan trọng: Khối này sẽ tự co giãn để lấp đầy không gian === */
+    flex-grow: 1; 
 }
 
-/* Căn lề cho nút */
+.tour-item h3 {
+    font-size: 18px;
+    margin-bottom: 10px;
+    min-height: 44px; /* Đặt chiều cao tối thiểu để các tiêu đề thẳng hàng */
+}
+
+.tour-item p {
+    font-size: 14px;
+    color: #666;
+    margin-bottom: 8px;
+}
+
+/* Nút "Đặt Tour" sẽ được đẩy xuống cuối cùng */
 .tour-item .btn {
-    margin: 0 15px 15px;
-    /* Các thuộc tính khác của nút giữ nguyên */
+    display: block;
+    text-align: center;
+    padding: 12px;
+    margin: 0 15px 15px 15px; /* Thêm lề dưới cho nút */
+    background: linear-gradient(90deg, #0d6efd, #00c6ff);
+    color: white;
+    text-decoration: none;
+    border-radius: 8px;
+    font-weight: bold;
 }
 
 .tour-item:hover {

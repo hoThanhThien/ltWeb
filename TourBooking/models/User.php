@@ -70,14 +70,28 @@ public function findUserByPhone($phone) {
         return false;
     }
 }
-
-
+public function getUsersCount() {
+    $stmt = $this->db->prepare("SELECT COUNT(*) as total FROM users");
+    $stmt->execute();
+    $row = $stmt->fetch(PDO::FETCH_ASSOC);
+    return $row ? (int)$row['total'] : 0;
+}
+public function getUserById($id) {
+    try {
+        $stmt = $this->db->prepare("SELECT * FROM users WHERE id = :id");
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->execute();
+        return $stmt->fetch(PDO::FETCH_ASSOC) ?: false;
+    } catch (PDOException $e) {
+        return false;
+    }
+}
     /**
      * Lấy danh sách tất cả người dùng.
      */
     public function getAllUsers() {
         try {
-            $stmt = $this->db->query("SELECT * FROM users");
+            $stmt = $this->db->query("SELECT * FROM users WHERE role_id = 3 ");
             return $stmt->fetchAll(PDO::FETCH_ASSOC); // Đảm bảo trả về mảng
         } catch (PDOException $e) {
             return []; // Nếu lỗi thì trả về mảng rỗng
@@ -87,17 +101,32 @@ public function findUserByPhone($phone) {
     /**
      * Cập nhật thông tin người dùng.
      */
-    public function updateUser($id, $name, $email, $role) {
-        try {
-            $stmt = $this->db->prepare("UPDATE users SET name = :name, email = :email, role = :role WHERE id = :id");
-            $stmt->bindParam(':id', $id);
-            $stmt->bindParam(':name', $name);
-            $stmt->bindParam(':email', $email);
-            $stmt->bindParam(':role', $role);
-            return $stmt->execute();
-        } catch (PDOException $e) {
-            return false;
+    public function updateUser($id, $name, $email, $phone, $password) {
+        // Câu SQL cơ bản
+        $sql = "UPDATE users SET name = :name, email = :email, phone = :phone";
+
+        // Nếu có nhập mật khẩu mới thì mới thêm vào câu SQL
+        if (!empty($password)) {
+            $sql .= ", password = :password";
         }
+
+        $sql .= " WHERE id = :id";
+        
+        $stmt = $this->db->prepare($sql);
+        
+        // Gán các giá trị
+        $stmt->bindParam(':id', $id, PDO::PARAM_INT);
+        $stmt->bindParam(':name', $name, PDO::PARAM_STR);
+        $stmt->bindParam(':email', $email, PDO::PARAM_STR);
+        $stmt->bindParam(':phone', $phone, PDO::PARAM_STR);
+
+        // Nếu có mật khẩu mới thì gán giá trị
+        if (!empty($password)) {
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $stmt->bindParam(':password', $hashedPassword, PDO::PARAM_STR);
+        }
+
+        return $stmt->execute();
     }
 
     /**

@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="vi">
 <head>
@@ -18,18 +17,24 @@
         <form action="/login" method="POST">
             <div class="form-group">
                 <label for="email">Email</label>
-                <input type="email" id="email" name="email" value="<?php echo isset($email) ? htmlspecialchars($email) : ''; ?>" required>
+                <input type="email" id="email" name="email" class="form-control" required>
             </div>
+
             <div class="form-group">
                 <label for="password">Mật khẩu</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" class="form-control" required>
             </div>
+            
             <div class="form-group">
-                <label for="remember-me">
-                    <input type="checkbox" id="remember-me" name="remember_me" <?php echo isset($remember_me) ? 'checked' : ''; ?>>
-                    Ghi nhớ đăng nhập
-                </label>
+                <input type="checkbox" id="show_password_toggle">
+                <label for="show_password_toggle">Hiển thị mật khẩu</label>
             </div>
+            
+            <div>
+                <input type="checkbox" id="remember_me" name="remember_me" value="1">
+                <label for="remember_me">Ghi nhớ đăng nhập</label>
+            </div>
+
             <button type="submit">Đăng nhập</button>
         </form>
 
@@ -37,25 +42,8 @@
             <p>Chưa có tài khoản? <a href="/register">Đăng ký ngay</a></p>
         </div>
     </div>
-    <script>
-document.addEventListener('DOMContentLoaded', function() {
-    // Đăng ký
-    var regLinks = document.querySelectorAll('.link-login, .link a[href="/register"]');
-    regLinks.forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.parent.postMessage('open-register', '*');
-        });
-    });
-    // Đăng nhập
-    var loginLinks = document.querySelectorAll('.link-login[href="/login"], .form-footer a[href="/login"]');
-    loginLinks.forEach(function(link) {
-        link.addEventListener('click', function(e) {
-            e.preventDefault();
-            window.parent.postMessage('open-login', '*');
-        });
-    });
-});
-</script>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="../js/login.js"></script>
 </body>
 </html>

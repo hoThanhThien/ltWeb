@@ -77,7 +77,7 @@ function getImageSrc($image) {
         <?php if (!empty($randomTours)): ?>
         
             <section class="random-tours">
-             <h3>Tất Cả TOUR </h3>  
+            <h3>Tất Cả TOUR </h3>  
             
     <div id="tour-list">
         <?php foreach ($randomTours as $tour): ?>
@@ -86,14 +86,14 @@ function getImageSrc($image) {
                 
                 <div class="tour-content">
                     <h3><?php echo htmlspecialchars($tour['title']); ?> - <?php echo htmlspecialchars($tour['location']); ?></h3>
-                   <p><?php if (!empty($tour['discount_price']) && $tour['discount_price'] > 0): ?>
+                    <p><?php if (!empty($tour['discount_price']) && $tour['discount_price'] > 0): ?>
     <span><del><?= number_format($tour['price'], 0, ',', '.') ?>₫</del></span>
     <span><?= number_format($tour['discount_price'], 0, ',', '.') ?>₫ / người</span>
 <?php else: ?>
     <span><?= number_format($tour['price'], 0, ',', '.') ?>₫ / người</span>
 <?php endif; ?>
 </p>
-                    <p>Ngày khởi hành: <?php echo htmlspecialchars($tour['start_date']); ?> - <?php echo htmlspecialchars($tour['end_date']); ?></p>
+                    <p>Ngày khởi hành: <?php echo date('d/m/Y', strtotime($tour['start_date'])); ?> - <?php echo date('d/m/Y', strtotime($tour['end_date'])); ?></p>
                     <p class="stars"><?php for ($i=0; $i<$tour['stars']; $i++) echo '⭐'; ?></p>
                 </div> <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
             </div>
@@ -117,7 +117,7 @@ function getImageSrc($image) {
     <span><?= number_format($tour['price'], 0, ',', '.') ?>₫ / người</span>
 <?php endif; ?>
 </p>
-                        <p>Ngày khởi hành: <?php echo htmlspecialchars($tour['start_date']); ?> - <?php echo htmlspecialchars($tour['end_date']); ?></p>
+                    <p>Ngày khởi hành: <?php echo date('d/m/Y', strtotime($tour['start_date'])); ?> - <?php echo date('d/m/Y', strtotime($tour['end_date'])); ?></p>
                         <p class="stars"><?php for ($i=0; $i<$tour['stars']; $i++) echo '⭐'; ?></p>
                         <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
                     </div>
@@ -126,32 +126,34 @@ function getImageSrc($image) {
         </section>
         <?php endif; ?>
 
-        <?php if (!empty($internationalTours) && $filter === 'international'): ?>
-        <section class="international-tours">
-            <h3>CÁC TOUR NƯỚC NGOÀI</h3>
-            <div id="tour-list">
-                <?php foreach ($internationalTours as $tour): ?>
-                    <div class="tour-item">
-                        <img src="<?php echo getImageSrc($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
-                        <h3><?php echo htmlspecialchars($tour['title']); ?> - <?php echo htmlspecialchars($tour['location']); ?></h3>
-                        <p><?php if (!empty($tour['discount_price']) && $tour['discount_price'] > 0): ?>
-    <span><del><?= number_format($tour['price'], 0, ',', '.') ?>₫</del></span>
-    <span><?= number_format($tour['discount_price'], 0, ',', '.') ?>₫ / người</span>
-<?php else: ?>
-    <span><?= number_format($tour['price'], 0, ',', '.') ?>₫ / người</span>
-<?php endif; ?>
-</p>
-<!-- Debugging output 
-<pre><?php print_r($tour); ?></pre>
--->
-                        <p>Ngày khởi hành: <?php echo htmlspecialchars($tour['start_date']); ?> - <?php echo htmlspecialchars($tour['end_date']); ?></p>
+       <?php if (!empty($internationalTours) && $filter === 'international'): ?>
+    <section class="international-tours">
+        <h3>CÁC TOUR NƯỚC NGOÀI</h3>
+        <div id="tour-list">
+            <?php foreach ($internationalTours as $tour): ?>
+                <div class="tour-item">
+                    <img src="<?php echo getImageSrc($tour['image']); ?>" alt="<?php echo htmlspecialchars($tour['title']); ?>">
+                    
+                    <div class="tour-content">
+                        <h3><?php echo htmlspecialchars($tour['title']); ?></h3>
+                        <p>
+                            <?php if (!empty($tour['discount_price']) && $tour['discount_price'] > 0): ?>
+                                <span><del><?= number_format($tour['price'], 0, ',', '.') ?>₫</del></span>
+                                <span><?= number_format($tour['discount_price'], 0, ',', '.') ?>₫ / người</span>
+                            <?php else: ?>
+                                <span><?= number_format($tour['price'], 0, ',', '.') ?>₫ / người</span>
+                            <?php endif; ?>
+                        </p>
+                        <p>Ngày khởi hành: <?php echo date('d/m/Y', strtotime($tour['start_date'])); ?> - <?php echo date('d/m/Y', strtotime($tour['end_date'])); ?></p>
                         <p class="stars"><?php for ($i=0; $i<$tour['stars']; $i++) echo '⭐'; ?></p>
-                        <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
                     </div>
-                <?php endforeach; ?>
-            </div>
-        </section>
-        <?php endif; ?>
+                    
+                    <a href="/booking?id=<?php echo $tour['id']; ?>" class="btn">Đặt Tour</a>
+                </div>
+            <?php endforeach; ?>
+        </div>
+    </section>
+<?php endif; ?>
                 
         <?php include 'pagination.php'; ?>
     </div>
